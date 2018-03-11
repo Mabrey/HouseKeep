@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "373947294083",
+    "firebase_url": "https://housekeep-a1cfb.firebaseio.com",
+    "project_id": "housekeep-a1cfb",
+    "storage_bucket": "housekeep-a1cfb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373947294083:android:62a4feb862bae517",
+        "android_client_info": {
+          "package_name": "matt.housekeep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373947294083-350a49e9fpji8tmear0riit46jdt34nn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matt.housekeep",
+            "certificate_hash": "972b80af85716bcd23416a915a86016d4b2f0983"
+          }
+        },
+        {
+          "client_id": "373947294083-e5ppjgqtkjn6cprbpttb267cakovv0pa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxyhalbG2X7YqL-Z173jzpeGNPiK7AHX8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373947294083-e5ppjgqtkjn6cprbpttb267cakovv0pa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
