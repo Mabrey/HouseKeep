@@ -1,12 +1,12 @@
 import java.util.List;
 
 public class Group {
-    String nameOfGroup;
-    User ownerOfGroup;
-    List<User> groupMembers;
-    List<Chore> Chores;
-    List<Task> Tasks;
-    List<ToDoList> Lists;
+    private String nameOfGroup;
+    private User ownerOfGroup;
+    private List<User> groupMembers;
+    private List<Chore> Chores;
+    private List<Task> Tasks;
+    private List<ToDoList> Lists;
 
     public Group(String nameOfGroup, User ownerOfGroup) {
         super();
