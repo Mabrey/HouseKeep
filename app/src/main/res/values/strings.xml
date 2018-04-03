@@ -23,7 +23,7 @@
     <string name="please_input_account_info">Please Enter Information Below</string>
     <string name="enter_name">Name</string>
     <string name="prompt_password_again">Password Again</string>
-    <string name="sign_up_consent_warning">By selecting \"Sign Up\" you agree to letting us use your information to figure out what the hell we are trying to do. Thanks!</string>
+    <string name="sign_up_consent_warning">By selecting \"Sign Up\" you agree to let us use your information to figure out what the hell we are trying to do. Thanks! P.S. Please don\'t use your normal password.</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="sign_up">Sign Up</string>
 
