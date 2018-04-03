@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 
 public class AccountCreateActivity extends AppCompatActivity {
-    
+
     boolean isPrivacyVisible;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
