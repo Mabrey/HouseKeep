@@ -28,7 +28,15 @@
     <string name="sign_up">Sign Up</string>
     <string name="title_activity_home">This is Home</string>
     <string name="home_page">Home</string>
+    <!-- Strings related to UserProfile -->
     <string name="title_activity_user_profile">Profile</string>
+    <string name="name_field">Name:</string>
+    <string name="username_field">Username:</string>
+    <string name="chores_completed_field">Chores Completed:</string>
+    <string name="statistics_title">Statistics:</string>
+    <string name="user_info_title">User Info:</string>
+    <string name="email_field">Email:</string>
+    <string name="sign_out_button">Sign Out</string>
 
 
 </resources>
