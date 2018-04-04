@@ -28,6 +28,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="title_activity_home">This is Home</string>
     <string name="home_page">Home</string>
+    <string name="title_activity_user_profile">Profile</string>
 
 
 </resources>
