@@ -11,4 +11,11 @@
         android:orderInCategory="300"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/action_plus"
+        android:title="@string/action_profile"
+        android:icon="@drawable/ic_plus_button"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom"/>
+
 </menu>
