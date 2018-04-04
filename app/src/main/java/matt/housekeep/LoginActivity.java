@@ -3,6 +3,7 @@ package matt.housekeep;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -23,11 +24,14 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -67,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTitle("Sign In");
+        setTitle("Welcome To HouseKeep");
 
         setContentView(R.layout.activity_login);
         // Set up the login form.
@@ -101,6 +105,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        //this is used to hide the keyboard when you select the background
+        final LinearLayout app_layer = (LinearLayout) findViewById(R.id.login_linear_layer);
+        app_layer.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(app_layer.getWindowToken(), 0);
+            }
+        });
+
         /*
         Button signIn = (Button)findViewById(R.id.sign_in_button);
         newAccount.setOnClickListener(new OnClickListener(){
@@ -124,6 +138,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+
+
+
+
+
     private void attemptLogin() {
 
         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
