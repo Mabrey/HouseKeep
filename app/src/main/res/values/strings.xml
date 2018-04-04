@@ -26,6 +26,8 @@
     <string name="sign_up_consent_warning">By selecting \"Sign Up\" you agree to let us use your information to figure out what the hell we are trying to do. Thanks! P.S. Please don\'t use your normal password.</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="sign_up">Sign Up</string>
+    <string name="title_activity_home">This is Home</string>
+    <string name="home_page">Home</string>
 
 
 </resources>
