@@ -1,5 +1,6 @@
 package matt.housekeep;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,9 +38,12 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_profile) {
-            Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
+            //Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(HomeActivity.this, UserProfile.class));
             return true;
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
