@@ -2,25 +2,56 @@ package matt.housekeep;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
+import android.widget.ScrollView;
 
 //public class HomeActivity extends AppCompatActivity
 public class HomeActivity extends AppCompatActivity {
+
+    private BottomNavigationView bottomNavigationView;
+    private ScrollView HomeScroll;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_home:
+                    //HomeScroll.fullScroll(ScrollView.FOCUS_UP);
+                    return true;
+                case R.id.menu_create_task:
+                    // TODO
+                    return true;
+                case R.id.menu_profile:
+                    startActivity(new Intent(HomeActivity.this, UserProfile.class));
+                    return true;
+            }
+            return false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.homeLayout);
+        layout.requestFocus();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
     }
     @Override
@@ -37,14 +68,14 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_profile) {
+        if (id == R.id.action_notification) {
             //Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(HomeActivity.this, UserProfile.class));
+            //startActivity(new Intent(HomeActivity.this, UserProfile.class));
             return true;
         }
 
-
-
         return super.onOptionsItemSelected(item);
     }
+
+
 }
