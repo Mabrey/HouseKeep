@@ -4,19 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class CreateTask extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+
+    private TextView freqLabel;
+
+    private Spinner typeSpinner;
+    private Spinner frequencySpinner;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -46,18 +50,14 @@ public class CreateTask extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Spinner typeSpinner = findViewById(R.id.typeSpinner);
-        Spinner frequencySpinner = findViewById(R.id.frequencySpinner);
+        typeSpinner = findViewById(R.id.typeSpinner);
+        frequencySpinner = findViewById(R.id.frequencySpinner);
 
         String[] types = new String[]{"Task", "Chore", "Reminder"};
         String[] frequencies = new String[]{"N/A", "Daily", "Weekly", "Monthly"};
@@ -67,6 +67,31 @@ public class CreateTask extends AppCompatActivity {
 
         typeSpinner.setAdapter(typesAdapter);
         frequencySpinner.setAdapter(freqAdapter);
+
+        freqLabel = (TextView)findViewById(R.id.frequencyTextView);
+
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch(i){
+                    case 0:     //task
+                    case 2:{    //reminder
+                        freqLabel.setVisibility(View.GONE);
+                        frequencySpinner.setVisibility(View.GONE);
+                        break;
+                    }
+                    case 1: {
+                        freqLabel.setVisibility(View.VISIBLE);
+                        frequencySpinner.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
 }
