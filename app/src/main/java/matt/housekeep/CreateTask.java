@@ -60,7 +60,7 @@ public class CreateTask extends AppCompatActivity {
         frequencySpinner = findViewById(R.id.frequencySpinner);
 
         String[] types = new String[]{"Task", "Chore", "Reminder"};
-        String[] frequencies = new String[]{"N/A", "Daily", "Weekly", "Monthly"};
+        String[] frequencies = new String[]{"Daily", "Weekly", "Monthly"};
 
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
         ArrayAdapter<String> freqAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, frequencies);

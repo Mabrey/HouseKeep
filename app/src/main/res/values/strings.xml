@@ -52,6 +52,7 @@
     <string name="choose_frequency">Choose Frequency:</string>
     <string name="frequency_tooltip">Choose N/A for Frequency if you wish to create a task, otherwise a chore rotation is created in the given interval.</string>
     <string name="create_task">Create!</string>
+    <string name="task_description">Enter Description:</string>
 
 
 </resources>
