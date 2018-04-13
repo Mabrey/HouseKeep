@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class CreateTask extends AppCompatActivity {
+public class CreateTaskActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
@@ -29,14 +29,14 @@ public class CreateTask extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_home:
-                    startActivity(new Intent(CreateTask.this, HomeActivity.class));
+                    startActivity(new Intent(CreateTaskActivity.this, HomeActivity.class));
                     return true;
                 case R.id.menu_create_task:
                     //Maybe contextually turn this into a different button/remove on this screen
-                    //startActivity(new Intent(CreateTask.this, CreateTask.class));
+                    //startActivity(new Intent(CreateTaskActivity.this, CreateTaskActivity.class));
                     return true;
                 case R.id.menu_profile:
-                    startActivity(new Intent(CreateTask.this, UserProfile.class));
+                    startActivity(new Intent(CreateTaskActivity.this, UserProfileActivity.class));
                     return true;
             }
             return false;

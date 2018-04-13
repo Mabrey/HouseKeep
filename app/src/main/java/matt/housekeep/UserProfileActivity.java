@@ -4,15 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfileActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
@@ -23,14 +21,14 @@ public class UserProfile extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_home:
-                    startActivity(new Intent(UserProfile.this, HomeActivity.class));
+                    startActivity(new Intent(UserProfileActivity.this, HomeActivity.class));
                     return true;
                 case R.id.menu_create_task:
                     //Maybe contextually turn this into a different button/remove on this screen
-                    startActivity(new Intent(UserProfile.this, CreateTask.class));
+                    startActivity(new Intent(UserProfileActivity.this, CreateTaskActivity.class));
                     return true;
                 case R.id.menu_profile:
-                    //startActivity(new Intent(UserProfile.this, UserProfile.class));
+                    //startActivity(new Intent(UserProfileActivity.this, UserProfileActivity.class));
                     return true;
             }
             return false;
@@ -49,7 +47,7 @@ public class UserProfile extends AppCompatActivity {
         Button button= (Button) findViewById(R.id.sign_out);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(UserProfile.this,LoginActivity.class));
+                startActivity(new Intent(UserProfileActivity.this,LoginActivity.class));
             }
         });
 

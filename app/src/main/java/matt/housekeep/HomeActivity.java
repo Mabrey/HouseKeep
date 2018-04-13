@@ -27,10 +27,10 @@ public class HomeActivity extends AppCompatActivity {
                     //HomeScroll.fullScroll(ScrollView.FOCUS_UP);
                     return true;
                 case R.id.menu_create_task:
-                    startActivity(new Intent(HomeActivity.this, CreateTask.class));
+                    startActivity(new Intent(HomeActivity.this, CreateTaskActivity.class));
                     return true;
                 case R.id.menu_profile:
-                    startActivity(new Intent(HomeActivity.this, UserProfile.class));
+                    startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
                     return true;
             }
             return false;
@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_notification) {
             //Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
-            //startActivity(new Intent(HomeActivity.this, UserProfile.class));
+            //startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
             return true;
         }
 

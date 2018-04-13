@@ -36,7 +36,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UserProfile"
+            android:name=".UserProfileActivity"
             android:label="@string/title_activity_user_profile"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -45,7 +45,7 @@
                 android:value="matt.housekeep.HomeActivity" />
         </activity>
         <activity
-            android:name=".CreateTask"
+            android:name=".CreateTaskActivity"
             android:label="@string/title_activity_create_task"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
