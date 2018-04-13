@@ -27,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
                     //HomeScroll.fullScroll(ScrollView.FOCUS_UP);
                     return true;
                 case R.id.menu_create_task:
-                    // TODO
+                    startActivity(new Intent(HomeActivity.this, CreateTask.class));
                     return true;
                 case R.id.menu_profile:
                     startActivity(new Intent(HomeActivity.this, UserProfile.class));
