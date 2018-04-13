@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 public class CreateTask extends AppCompatActivity {
 
@@ -43,12 +46,27 @@ public class CreateTask extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        Spinner typeSpinner = findViewById(R.id.typeSpinner);
+        Spinner frequencySpinner = findViewById(R.id.frequencySpinner);
+
+        String[] types = new String[]{"Task", "Chore", "Reminder"};
+        String[] frequencies = new String[]{"N/A", "Daily", "Weekly", "Monthly"};
+
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
+        ArrayAdapter<String> freqAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, frequencies);
+
+        typeSpinner.setAdapter(typesAdapter);
+        frequencySpinner.setAdapter(freqAdapter);
     }
 
 }
