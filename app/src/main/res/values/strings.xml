@@ -48,11 +48,14 @@
     <string name="title_activity_create_task">Create Task</string>
 
     <!-- Strings related to Create Task -->
-    <string name="choose_type">Choose Type:</string>
-    <string name="choose_frequency">Choose Frequency:</string>
+    <string name="choose_type">Type:</string>
+    <string name="choose_frequency">Frequency:</string>
     <string name="frequency_tooltip">Choose N/A for Frequency if you wish to create a task, otherwise a chore rotation is created in the given interval.</string>
     <string name="create_task">Create!</string>
-    <string name="task_description">Enter Description:</string>
+    <string name="task_description">Description:</string>
+
+    <!-- Strings related to Notifications -->
+    <string name="title_activity_notification">NotificationActivity</string>
 
 
 </resources>
