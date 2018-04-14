@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +34,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +50,13 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
+
+
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("Users");
+
+
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -62,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -75,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -95,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onClick(View view) {
                 attemptLogin();
             }
-        });
+        });//Instead of just going to homescreen activity, check that the login cred are valid.
 
         Button newAccount = (Button)findViewById(R.id.accountCreate);
         newAccount.setOnClickListener(new OnClickListener(){
@@ -145,7 +159,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void attemptLogin() {
 
-        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        String username = mUsernameView.getText().toString();
+        isUsernameValid(username);
+        //startActivity(new Intent(LoginActivity.this, HomeActivity.class));
         /*
         if (mAuthTask != null) {
             return;
@@ -193,9 +209,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         */
     }
-
-    private boolean isUsernameValid(String username) {
+    boolean foundUser = false;
+    private boolean isUsernameValid(final String username) {
         //TODO: Replace this with your own logic
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()){
+                    Log.d("User:",userSnapshot.getKey());
+                    Log.d("Username:",username);
+
+                    if(userSnapshot.getKey().equals(username)){
+                        foundUser = true;
+                        Log.d("Match","Yes");
+
+                        //Toast.makeText(getApplicationContext(),"User Found",Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    else{
+                        //Toast.makeText(getApplicationContext(),"Incorrect Username or Password",Toast.LENGTH_SHORT).show();
+                        Log.d("Match","No");
+
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         return username.length() > 4;
     }
 
@@ -280,7 +326,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        mUsernameView.setAdapter(adapter);
     }
 
     private void createNewAccount()

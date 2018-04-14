@@ -24,7 +24,8 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_home:
-                    //HomeScroll.fullScroll(ScrollView.FOCUS_UP);
+                    HomeScroll = (ScrollView) findViewById(R.id.HomeScroll);
+                    HomeScroll.fullScroll(ScrollView.FOCUS_UP);
                     return true;
                 case R.id.menu_create_task:
                     startActivity(new Intent(HomeActivity.this, CreateTaskActivity.class));

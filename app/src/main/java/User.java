@@ -6,6 +6,7 @@ TO-DO:  may need to add methods for removing a single group/chore/task/ToDoList
  */
 public class User {
     private String name;
+    private String username;
     private int completedChores;
     private List<Group> UsersGroups;
     private List<Chore> UsersChores;
@@ -40,6 +41,10 @@ public class User {
     public String getName() {
         return name;
     }
+
+    public void setUsername(String username)  {this.username = username;}
+
+    public String getUsername() {return username;}
 
     //sets number of user's completed chores; takes int as input
     public void setCompletedChores(int completedChores) {
