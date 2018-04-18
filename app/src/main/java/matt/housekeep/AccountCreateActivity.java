@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.SecureRandom;
 import java.util.Random;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 
@@ -28,12 +29,13 @@ public class AccountCreateActivity extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final Random RANDOM = new SecureRandom();
+    boolean validUsername = false;
 
     private class hashPass<T> {
         private String hashedPassword;
         private String salt;
 
-        private hashPass(){
+        private hashPass() {
 
         }
 
@@ -60,10 +62,11 @@ public class AccountCreateActivity extends AppCompatActivity {
     }
 
 
-
     boolean isPrivacyVisible;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_create);
 
@@ -95,72 +98,34 @@ public class AccountCreateActivity extends AppCompatActivity {
                 EditText passwordReenterText = findViewById(R.id.create_account_reenter_password);
                 String reenterPassword = passwordReenterText.getText().toString();
 
-                if (isUsernameValid(username))
-                {
-                    if (isPasswordValid(password))
-                    {
-                        Log.d("Password Valid?:", "Yes");
-                        if (isPasswordReEnterMatch(password, reenterPassword))
-                        {
-                            Log.d("Match?: ", "Yes");
-                            hashPass hashedPassword = hashPassword(password);
-                            DatabaseReference accountCreateDatabase;
-                            accountCreateDatabase = FirebaseDatabase.getInstance().getReference();
-
-                            accountCreateDatabase.child("Users").child(username).child("username").setValue(username);
-                            accountCreateDatabase.child("Users").child(username).child("name").setValue(name);
-                            accountCreateDatabase.child("Users").child(username).child("password").setValue(hashedPassword);
-
-                            Toast.makeText(getApplicationContext(),"Congrats",Toast.LENGTH_SHORT).show(); //TODO passwords don't match
-
-                            //TODO create an account for the user
-                        }
-                        else Toast.makeText(getApplicationContext(),"Password Doesn't match",Toast.LENGTH_SHORT).show(); //TODO passwords don't match
-                    }
-                    else Log.d("Password Invalid", "yes");
-                     //TODO password is not valid
-                }
-                 //TODO username is not valid
-
-
-
-
+                checkCredentials(name, username, password, reenterPassword);
             }
         });
     }
-    private boolean validUsername;
-    private boolean usernameCheck;
-    private boolean isUsernameValid(String username)
-    {
-        validUsername = false;
-        usernameCheck = false;
-        if (username.length() <= 4)
-        {
-            Toast.makeText(getApplicationContext(),"Username Too Short",Toast.LENGTH_SHORT).show();
-            return false;
-        }
 
-        if (username.length() > 20) {
+    private void checkCredentials(final String name, final String username, final String password, final String reenterPassword) {
 
-            Toast.makeText(getApplicationContext(), "Username Too Long", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-            DatabaseReference userRef = database.getReference();
-
-            userRef.child("Users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference userRef = database.getReference();
+        userRef.child("Users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
 
-        public void onDataChange(DataSnapshot dataSnapshot) {
-               if(dataSnapshot.exists())
-               {
-                   Toast.makeText(getApplicationContext(),"Username Exists",Toast.LENGTH_SHORT).show();
-                   EditText usernameText = findViewById(R.id.create_account_username);
-                   usernameText.requestFocus();
-               }
-               else validUsername = true;
-               usernameCheck = true;
-                Log.d("username Valid 1: ", Boolean.toString(validUsername) );
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //check if username exists.
+                if (dataSnapshot.exists()) {
+                    Toast.makeText(getApplicationContext(), "Username Exists", Toast.LENGTH_SHORT).show();
+                    EditText usernameText = findViewById(R.id.create_account_username);
+                    usernameText.requestFocus();
+                } else { //username doesn't exist
+                    if (isUsernameValid(username)) {
+                        if (isPasswordValid(password)) {
+                            if (isPasswordReEnterMatch(password, reenterPassword)) {
+                                createAccount(name, username, password);
+                            }
+                        }
+                    }
+                }
+                
+                Log.d("username Valid 1: ", Boolean.toString(validUsername));
             }
 
             @Override
@@ -168,33 +133,47 @@ public class AccountCreateActivity extends AppCompatActivity {
 
             }
         });
-        Log.d("username Valid 2: ", Boolean.toString(validUsername) );
-        return validUsername;
+    }
+
+    private void createAccount(String name, String username, String password) {
+        Log.d("Match?: ", "Yes");
+        hashPass hashedPassword = hashPassword(password);
+        DatabaseReference accountCreateDatabase;
+        accountCreateDatabase = FirebaseDatabase.getInstance().getReference();
+
+        accountCreateDatabase.child("Users").child(username).child("username").setValue(username);
+        accountCreateDatabase.child("Users").child(username).child("name").setValue(name);
+        accountCreateDatabase.child("Users").child(username).child("password").setValue(hashedPassword);
+
+        Toast.makeText(getApplicationContext(), "Congrats", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean isUsernameValid(String username) {
+
+        String pattern = "(?=\\S+$).{8,20}";
+        return username.matches(pattern);
     }
 
 
-    private boolean isPasswordValid(String password)
-    {
+    private boolean isPasswordValid(String password) {
         Log.d("passsword: ", password);
         String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
         return password.matches(pattern);
     }
 
-    private boolean isPasswordReEnterMatch(String password, String reenterPassword)
-    {
+    private boolean isPasswordReEnterMatch(String password, String reenterPassword) {
 
 
         return password.equals(reenterPassword);
     }
 
-    private hashPass hashPassword(String password){
+    private hashPass hashPassword(String password) {
         String salt = BCrypt.gensalt();
-        String hashedPassword = BCrypt.hashpw(password, salt );
+        String hashedPassword = BCrypt.hashpw(password, salt);
         hashPass hashedPasswordAndSalt = new hashPass(password, salt);
         return hashedPasswordAndSalt;
 
     }
-
 
 
 }
