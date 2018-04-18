@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 //public class HomeActivity extends AppCompatActivity
 public class HomeActivity extends AppCompatActivity {
@@ -70,8 +71,8 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_notification) {
-            //Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
-            //startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
+            Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(HomeActivity.this, NotificationActivity.class));
             return true;
         }
 

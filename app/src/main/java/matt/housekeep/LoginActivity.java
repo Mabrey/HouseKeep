@@ -159,9 +159,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void attemptLogin() {
 
-        String username = mUsernameView.getText().toString();
-        isUsernameValid(username);
-        //startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        //String username = mUsernameView.getText().toString();
+        //isUsernameValid(username);
+        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
         /*
         if (mAuthTask != null) {
             return;
