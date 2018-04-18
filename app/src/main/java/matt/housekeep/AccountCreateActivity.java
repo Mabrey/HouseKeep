@@ -10,6 +10,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -18,7 +25,40 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class AccountCreateActivity extends AppCompatActivity {
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final Random RANDOM = new SecureRandom();
+
+    private class hashPass<T> {
+        private String hashedPassword;
+        private String salt;
+
+        private hashPass(){
+
+        }
+
+        private hashPass(String hashedPassword, String salt) {
+            this.hashedPassword = hashedPassword;
+            this.salt = salt;
+        }
+
+        public String getHashedPassword() {
+            return hashedPassword;
+        }
+
+        public void setHashedPassword(String hashedPassword) {
+            this.hashedPassword = hashedPassword;
+        }
+
+        public String getSalt() {
+            return salt;
+        }
+
+        public void setSalt(String salt) {
+            this.salt = salt;
+        }
+    }
+
+
 
     boolean isPrivacyVisible;
     @Override
@@ -52,42 +92,96 @@ public class AccountCreateActivity extends AppCompatActivity {
 
                 if (isUsernameValid(username))
                 {
+                    if (isPasswordValid(password))
+                    {
+                        if (isPasswordReEnterMatch(password, reenterPassword))
+                        {
+                            hashPass hashedPassword = hashPassword(password);
+                            DatabaseReference accountCreateDatabase;
+                            accountCreateDatabase = FirebaseDatabase.getInstance().getReference();
 
+                            accountCreateDatabase.child("Users").child(username).child("username").setValue(username);
+                            accountCreateDatabase.child("Users").child(username).child("name").setValue(name);
+                            accountCreateDatabase.child("Users").child(username).child("password").setValue(hashedPassword);
+
+
+                            //TODO create an account for the user
+                        }
+                         //TODO passwords don't match
+                    }
+                     //TODO password is not valid
                 }
-                else //TODO username is not valid
+                 //TODO username is not valid
 
-                if (isPasswordValid(password))
-                {
 
-                }
-                else //TODO password is not valid
 
-                if (isPasswordReEnterMatch(password, reenterPassword))
-                {
 
-                }
-                else //TODO passwords don't match
             }
         });
     }
-
+    private boolean validUsername = false;
     private boolean isUsernameValid(String username)
     {
-        return username.length() > 4;//TODO check if username is okay
+        validUsername = false;
+        if (username.length() <= 4)
+        {
+            Toast.makeText(getApplicationContext(),"Username Too Short",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (username.length() > 20) {
+            Toast.makeText(getApplicationContext(), "Username Too Long", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+            DatabaseReference userRef = database.getReference();
+
+        userRef.child("Users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               if(dataSnapshot.exists())
+               {
+                   Toast.makeText(getApplicationContext(),"Username Exists",Toast.LENGTH_SHORT).show();
+                   EditText usernameText = findViewById(R.id.create_account_username);
+                   usernameText.requestFocus();
+               }
+               else validUsername = true;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return validUsername;
     }
+
 
     private boolean isPasswordValid(String password)
     {
-        return password.length() > 4;//TODO check if password is okay
+        boolean validPassword = false;
+
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+        if (password.matches(pattern))
+        {
+            validPassword = true;
+        }
+        return validPassword;
     }
 
     private boolean isPasswordReEnterMatch(String password, String reenterPassword)
     {
-        return password.equals(reenterPassword);//TODO check if password matches
+
+
+        return password.equals(reenterPassword);
     }
 
-    private String hashPass(String password){
-        return BCrypt.hashpw(password, BCrypt.gensalt());
+    private hashPass hashPassword(String password){
+        String salt = BCrypt.gensalt();
+        String hashedPassword = BCrypt.hashpw(password, salt );
+        hashPass hashedPasswordAndSalt = new hashPass(password, salt);
+        return hashedPasswordAndSalt;
 
     }
 
