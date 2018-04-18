@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -81,21 +82,27 @@ public class AccountCreateActivity extends AppCompatActivity {
         });
 
 
-        Button SignInButton = (Button) findViewById(R.id.create_account_sign_up);
-        SignInButton.setOnClickListener(new View.OnClickListener() {
+        Button SignUpButton = (Button) findViewById(R.id.create_account_sign_up);
+        SignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = findViewById(R.id.create_account_name).toString();
-                String username = findViewById(R.id.create_account_username).toString();
-                String password = findViewById(R.id.create_account_password).toString();
-                String reenterPassword = findViewById(R.id.create_account_reenter_password).toString();
+                EditText nameText = findViewById(R.id.create_account_name);
+                String name = nameText.getText().toString();
+                EditText usernameText = findViewById(R.id.create_account_username);
+                String username = usernameText.getText().toString();
+                EditText passwordText = findViewById(R.id.create_account_password);
+                String password = passwordText.getText().toString();
+                EditText passwordReenterText = findViewById(R.id.create_account_reenter_password);
+                String reenterPassword = passwordReenterText.getText().toString();
 
                 if (isUsernameValid(username))
                 {
                     if (isPasswordValid(password))
                     {
+                        Log.d("Password Valid?:", "Yes");
                         if (isPasswordReEnterMatch(password, reenterPassword))
                         {
+                            Log.d("Match?: ", "Yes");
                             hashPass hashedPassword = hashPassword(password);
                             DatabaseReference accountCreateDatabase;
                             accountCreateDatabase = FirebaseDatabase.getInstance().getReference();
@@ -104,11 +111,13 @@ public class AccountCreateActivity extends AppCompatActivity {
                             accountCreateDatabase.child("Users").child(username).child("name").setValue(name);
                             accountCreateDatabase.child("Users").child(username).child("password").setValue(hashedPassword);
 
+                            Toast.makeText(getApplicationContext(),"Congrats",Toast.LENGTH_SHORT).show(); //TODO passwords don't match
 
                             //TODO create an account for the user
                         }
-                         //TODO passwords don't match
+                        else Toast.makeText(getApplicationContext(),"Password Doesn't match",Toast.LENGTH_SHORT).show(); //TODO passwords don't match
                     }
+                    else Log.d("Password Invalid", "yes");
                      //TODO password is not valid
                 }
                  //TODO username is not valid
@@ -119,10 +128,12 @@ public class AccountCreateActivity extends AppCompatActivity {
             }
         });
     }
-    private boolean validUsername = false;
+    private boolean validUsername;
+    private boolean usernameCheck;
     private boolean isUsernameValid(String username)
     {
         validUsername = false;
+        usernameCheck = false;
         if (username.length() <= 4)
         {
             Toast.makeText(getApplicationContext(),"Username Too Short",Toast.LENGTH_SHORT).show();
@@ -130,15 +141,17 @@ public class AccountCreateActivity extends AppCompatActivity {
         }
 
         if (username.length() > 20) {
+
             Toast.makeText(getApplicationContext(), "Username Too Long", Toast.LENGTH_SHORT).show();
             return false;
         }
 
             DatabaseReference userRef = database.getReference();
 
-        userRef.child("Users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            userRef.child("Users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+
+        public void onDataChange(DataSnapshot dataSnapshot) {
                if(dataSnapshot.exists())
                {
                    Toast.makeText(getApplicationContext(),"Username Exists",Toast.LENGTH_SHORT).show();
@@ -146,6 +159,8 @@ public class AccountCreateActivity extends AppCompatActivity {
                    usernameText.requestFocus();
                }
                else validUsername = true;
+               usernameCheck = true;
+                Log.d("username Valid 1: ", Boolean.toString(validUsername) );
             }
 
             @Override
@@ -153,21 +168,16 @@ public class AccountCreateActivity extends AppCompatActivity {
 
             }
         });
-
+        Log.d("username Valid 2: ", Boolean.toString(validUsername) );
         return validUsername;
     }
 
 
     private boolean isPasswordValid(String password)
     {
-        boolean validPassword = false;
-
+        Log.d("passsword: ", password);
         String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
-        if (password.matches(pattern))
-        {
-            validPassword = true;
-        }
-        return validPassword;
+        return password.matches(pattern);
     }
 
     private boolean isPasswordReEnterMatch(String password, String reenterPassword)
