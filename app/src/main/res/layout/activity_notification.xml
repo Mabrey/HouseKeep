@@ -36,6 +36,4 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include />
-
 </android.support.constraint.ConstraintLayout>

@@ -129,15 +129,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        /*
-        Button signIn = (Button)findViewById(R.id.sign_in_button);
-        newAccount.setOnClickListener(new OnClickListener(){
-            @Override
-            public void onClick(View view){
-                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-            }
-        });
-        */
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -159,22 +150,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void attemptLogin() {
 
-        //String username = mUsernameView.getText().toString();
-        //isUsernameValid(username);
+        final String username = mUsernameView.getText().toString();
+        final String password = mPasswordView.getText().toString();
+    /*
+        DatabaseReference userRef = database.getReference("Users/" + username + "/Groups");
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> Groups = new ArrayList<String>();
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()){
+                    Groups.add(userSnapshot.getKey());
+                }
+                for(String group:Groups)
+                {
+                    Log.d("Group:", group);
+                }
+                Log.d("Group Count", String.valueOf(Groups.size()));
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    */
+
         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-        /*
-        if (mAuthTask != null) {
-            return;
-        }
 
         // Reset errors.
-        mEmailView.setError(null);
+        mUsernameView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String username = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
 
+        /*
         boolean cancel = false;
         View focusView = null;
 
@@ -187,12 +197,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(username)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
             cancel = true;
         } else if (!isUsernameValid(username)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+            mUsernameView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
             cancel = true;
         }
 
@@ -222,6 +232,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     if(userSnapshot.getKey().equals(username)){
                         foundUser = true;
+
                         Log.d("Match","Yes");
 
                         //Toast.makeText(getApplicationContext(),"User Found",Toast.LENGTH_SHORT).show();
