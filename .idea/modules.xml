@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/HouseKeep.iml" filepath="$PROJECT_DIR$/HouseKeep.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/bcrypt/bcrypt.iml" filepath="$PROJECT_DIR$/bcrypt/bcrypt.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bcrypt/bcrypt.iml" filepath="$PROJECT_DIR$/bcrypt/bcrypt.iml" />
     </modules>
   </component>
 </project>

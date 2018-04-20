@@ -57,5 +57,7 @@
     <!-- Strings related to Notifications -->
     <string name="title_activity_notification">NotificationActivity</string>
 
-
+    <string name="shared_prefs_key">"com.example.HouseKeep.prefs"</string>
+    <string name="saved_username_key">username_key</string>
+    <string name="title_activity_group">GroupActivity</string>
 </resources>
