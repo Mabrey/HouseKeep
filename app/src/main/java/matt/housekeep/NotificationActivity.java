@@ -44,6 +44,10 @@ public class NotificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
 }
