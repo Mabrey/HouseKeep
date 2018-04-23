@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -44,6 +45,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -80,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-    
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -144,20 +148,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         final String username = mUsernameView.getText().toString();
         final String password = mPasswordView.getText().toString();
-    /*
-        DatabaseReference userRef = database.getReference("Users/" + username + "/Groups");
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        DatabaseReference userRef = database.getReference("Users");
+        userRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> Groups = new ArrayList<String>();
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()){
-                    Groups.add(userSnapshot.getKey());
+                if (dataSnapshot.exists()) {
+                    verifyLogIn(username, password, dataSnapshot);
                 }
-                for(String group:Groups)
-                {
-                    Log.d("Group:", group);
-                }
-                Log.d("Group Count", String.valueOf(Groups.size()));
 
             }
 
@@ -166,92 +164,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             }
         });
-    */
 
-        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+
+
 
         // Reset errors.
         mUsernameView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
-
-        /*
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
-            cancel = true;
-        } else if (!isUsernameValid(username)) {
-            mUsernameView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
-        }
-        */
-    }
-    boolean foundUser = false;
-    private boolean isUsernameValid(final String username) {
-        //TODO: Replace this with your own logic
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()){
-                    Log.d("User:",userSnapshot.getKey());
-                    Log.d("Username:",username);
-
-                    if(userSnapshot.getKey().equals(username)){
-                        foundUser = true;
-
-                        Log.d("Match","Yes");
-
-                        //Toast.makeText(getApplicationContext(),"User Found",Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    else{
-                        //Toast.makeText(getApplicationContext(),"Incorrect Username or Password",Toast.LENGTH_SHORT).show();
-                        Log.d("Match","No");
-
-                    }
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return username.length() > 4;
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+    private void verifyLogIn(String username, String password, DataSnapshot userSnapshot) {
+        String hashedPassword;
+        String salt;
+        hashedPassword = (String) userSnapshot.child("Password Info").child("hashedPassword").getValue();
+        salt = (String) userSnapshot.child("Password Info").child("salt").getValue();
+
+        Log.d("Salt: ", salt);
+
+        if (hashedPassword.equals(BCrypt.hashpw(password, salt)))
+        {
+            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+            prefs = this.getSharedPreferences(getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
+            prefs.edit().putString(getString(R.string.saved_username_key), username).apply();
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
+            EditText usernameInput = findViewById(R.id.username);
+            usernameInput.requestFocus();
+            EditText passwordInput = findViewById(R.id.password);
+            passwordInput.setText("");
+        }
     }
+
 
     /**
      * Shows the progress UI and hides the login form.

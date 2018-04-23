@@ -69,13 +69,9 @@ public class HomeActivity extends AppCompatActivity {
         prefs = this.getSharedPreferences(
                 getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
 
-        //Log.d("PREFS", getString(R.string.shared_prefs_key));
 
-        //prefs.edit().putString(getString(R.string.saved_username_key), name).apply();
 
-        //String username = prefs.getString(getString(R.string.saved_username_key), "");
-
-        username = "mabrey";
+        String username = prefs.getString(getString(R.string.saved_username_key), "");
 
         DatabaseReference myRef = database.getReference("Users/" + username + "/Groups");
 
