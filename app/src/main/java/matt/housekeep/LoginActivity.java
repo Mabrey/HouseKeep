@@ -89,6 +89,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(isUserLoggedIn()){
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         setTitle("Welcome To HouseKeep");
 
         setContentView(R.layout.activity_login);
@@ -138,6 +144,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    private boolean isUserLoggedIn() {
+        prefs = this.getSharedPreferences(getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
+        if(prefs.getString(getString(R.string.saved_username_key), "").equals("") || prefs.getString(getString(R.string.loggedIn), "").equals("false") )
+            return false;
+        else
+            return true;
+    }
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -185,8 +199,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (hashedPassword.equals(BCrypt.hashpw(password, salt)))
         {
             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+
             prefs = this.getSharedPreferences(getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
             prefs.edit().putString(getString(R.string.saved_username_key), username).apply();
+            prefs.edit().putString(getString(R.string.loggedIn), "true").apply();
+
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

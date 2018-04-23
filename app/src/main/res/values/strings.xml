@@ -62,4 +62,5 @@
     <string name="title_activity_group">GroupActivity</string>
     <string name="username_requirements">Username must be 8 - 20 characters.</string>
     <string name="password_requirement">Password must contain [a-z], [A-Z], [0 - 9], and a special char.</string>
+    <string name="loggedIn">false</string>
 </resources>
