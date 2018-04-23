@@ -170,6 +170,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (dataSnapshot.exists()) {
                     verifyLogIn(username, password, dataSnapshot);
                 }
+                else Toast.makeText(getApplicationContext(), "Username/Password Invalid", Toast.LENGTH_SHORT).show();
+
 
             }
 
@@ -210,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             finish();
         }
         else {
-            Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Username/Password Invalid", Toast.LENGTH_SHORT).show();
             EditText usernameInput = findViewById(R.id.username);
             usernameInput.requestFocus();
             EditText passwordInput = findViewById(R.id.password);
