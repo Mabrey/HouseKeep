@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +33,7 @@ public class AccountCreateActivity extends AppCompatActivity {
     private static final Random RANDOM = new SecureRandom();
     boolean validUsername = false;
 
-    private class hashPass<T> {
+    private static class hashPass<T> {
         private String hashedPassword;
         private String salt;
 
@@ -78,7 +80,7 @@ public class AccountCreateActivity extends AppCompatActivity {
                 if (!isPrivacyVisible)
                     privacyPolicy.setVisibility(View.VISIBLE);
 
-                else privacyPolicy.setVisibility(View.INVISIBLE);
+                else privacyPolicy.setVisibility(View.GONE);
 
                 isPrivacyVisible = !isPrivacyVisible;
             }
@@ -120,12 +122,19 @@ public class AccountCreateActivity extends AppCompatActivity {
                         if (isPasswordValid(password)) {
                             if (isPasswordReEnterMatch(password, reenterPassword)) {
                                 createAccount(name, username, password);
+                                startActivity(new Intent(AccountCreateActivity.this, LoginActivity.class));
                             }
+                            else Toast.makeText(getApplicationContext(), "Passwords Don't Match", Toast.LENGTH_SHORT).show();
+                            EditText passwordReenterInput = findViewById(R.id.create_account_password);
+                            passwordReenterInput.requestFocus();
                         }
+                        else Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_SHORT).show();
+                        EditText passwordInput = findViewById(R.id.create_account_password);
+                        passwordInput.requestFocus();
                     }
+                    else Toast.makeText(getApplicationContext(), "Username Invalid", Toast.LENGTH_SHORT).show();
+
                 }
-                
-                Log.d("username Valid 1: ", Boolean.toString(validUsername));
             }
 
             @Override
@@ -141,11 +150,11 @@ public class AccountCreateActivity extends AppCompatActivity {
         DatabaseReference accountCreateDatabase;
         accountCreateDatabase = FirebaseDatabase.getInstance().getReference();
 
-        accountCreateDatabase.child("Users").child(username).child("username").setValue(username);
-        accountCreateDatabase.child("Users").child(username).child("name").setValue(name);
-        accountCreateDatabase.child("Users").child(username).child("password").setValue(hashedPassword);
+        accountCreateDatabase.child("Users").child(username).child("Username").setValue(username);
+        accountCreateDatabase.child("Users").child(username).child("Name").setValue(name);
+        accountCreateDatabase.child("Users").child(username).child("Password Info").setValue(hashedPassword);
 
-        Toast.makeText(getApplicationContext(), "Congrats", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Account Created", Toast.LENGTH_SHORT).show();
     }
 
     private boolean isUsernameValid(String username) {
@@ -157,22 +166,19 @@ public class AccountCreateActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         Log.d("passsword: ", password);
-        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}";
         return password.matches(pattern);
     }
 
     private boolean isPasswordReEnterMatch(String password, String reenterPassword) {
-
-
         return password.equals(reenterPassword);
     }
 
     private hashPass hashPassword(String password) {
         String salt = BCrypt.gensalt();
         String hashedPassword = BCrypt.hashpw(password, salt);
-        hashPass hashedPasswordAndSalt = new hashPass(password, salt);
+        hashPass hashedPasswordAndSalt = new hashPass(hashedPassword, salt);
         return hashedPasswordAndSalt;
-
     }
 
 

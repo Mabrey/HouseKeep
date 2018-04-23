@@ -60,4 +60,6 @@
     <string name="shared_prefs_key">"com.example.HouseKeep.prefs"</string>
     <string name="saved_username_key">username_key</string>
     <string name="title_activity_group">GroupActivity</string>
+    <string name="username_requirements">Username must be 8 - 20 characters.</string>
+    <string name="password_requirement">Password must contain [a-z], [A-Z], [0 - 9], and a special char.</string>
 </resources>
