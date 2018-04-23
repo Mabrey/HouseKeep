@@ -119,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
 
             Button btn = new Button(this);
+            btn.setTextSize(18);
             btn.setId(i);
             final int id_ = btn.getId();
             btn.setText(groups.get(id_));
