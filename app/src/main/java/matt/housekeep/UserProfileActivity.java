@@ -16,21 +16,29 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private SharedPreferences prefs;
-
+    private String groupname;
+    private boolean inGroup;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            Intent intent;
+            Bundle b = new Bundle();
+            b.putString("GroupName", groupname);
+            b.putBoolean("inGroup", inGroup);
+
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     startActivity(new Intent(UserProfileActivity.this, HomeActivity.class));
                     return true;
                 case R.id.menu_create_task:
                     //Maybe contextually turn this into a different button/remove on this screen
-                    startActivity(new Intent(UserProfileActivity.this, CreateTaskActivity.class));
-                    return true;
+                    intent = new Intent(UserProfileActivity.this, CreateTaskActivity.class);
+                    intent.putExtras(b);
+                    startActivity(intent);                    return true;
                 case R.id.menu_profile:
                     //startActivity(new Intent(UserProfileActivity.this, UserProfileActivity.class));
                     return true;
@@ -47,6 +55,11 @@ public class UserProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        Bundle b = getIntent().getExtras();
+        groupname = b.getString("GroupName");
+        inGroup = b.getBoolean("inGroup");
 
         prefs = this.getSharedPreferences(getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
         Button signOut= (Button) findViewById(R.id.sign_out);

@@ -41,21 +41,26 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            Intent intent;
+            Bundle b = new Bundle();
+            b.putString("GroupName", "");
+            b.putBoolean("inGroup", false);
+
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     HomeScroll = (ScrollView) findViewById(R.id.HomeScroll);
                     HomeScroll.fullScroll(ScrollView.FOCUS_UP);
                     return true;
                 case R.id.menu_create_task:
-                    Intent intent = new Intent(HomeActivity.this, CreateTaskActivity.class);
-                    Bundle b = new Bundle();
-                    b.putString("GroupName", "");
-                    b.putBoolean("inGroup", false);
+                    intent = new Intent(HomeActivity.this, CreateTaskActivity.class);
                     intent.putExtras(b);
                     startActivity(intent);
                     return true;
                 case R.id.menu_profile:
-                    startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
+                    intent = new Intent(HomeActivity.this, UserProfileActivity.class);
+                    intent.putExtras(b);
+                    startActivity(intent);
                     return true;
             }
             return false;
