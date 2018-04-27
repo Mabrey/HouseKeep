@@ -47,7 +47,12 @@ public class HomeActivity extends AppCompatActivity {
                     HomeScroll.fullScroll(ScrollView.FOCUS_UP);
                     return true;
                 case R.id.menu_create_task:
-                    startActivity(new Intent(HomeActivity.this, CreateTaskActivity.class));
+                    Intent intent = new Intent(HomeActivity.this, CreateTaskActivity.class);
+                    Bundle b = new Bundle();
+                    b.putString("GroupName", "");
+                    b.putBoolean("inGroup", false);
+                    intent.putExtras(b);
+                    startActivity(intent);
                     return true;
                 case R.id.menu_profile:
                     startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));

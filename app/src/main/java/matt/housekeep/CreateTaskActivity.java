@@ -21,6 +21,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
     private Spinner typeSpinner;
     private Spinner frequencySpinner;
+    private String groupname;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,6 +59,14 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         typeSpinner = findViewById(R.id.typeSpinner);
         frequencySpinner = findViewById(R.id.frequencySpinner);
+
+        Bundle b = getIntent().getExtras();
+        groupname = b.getString("GroupName");
+        boolean inGroup = b.getBoolean("inGroup");
+
+        if(inGroup){
+
+        }
 
         String[] types = new String[]{"Task", "Chore", "Reminder"};
         String[] frequencies = new String[]{"Daily", "Weekly", "Monthly"};

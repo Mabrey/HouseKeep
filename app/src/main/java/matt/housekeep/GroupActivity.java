@@ -8,35 +8,25 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ScrollView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 public class GroupActivity extends AppCompatActivity {
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     private BottomNavigationView bottomNavigationView;
     private String groupname;
     private String username;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.menu_home:
-                    startActivity(new Intent(GroupActivity.this, HomeActivity.class));
-                    return true;
-                case R.id.menu_create_task:
-                    startActivity(new Intent(GroupActivity.this, CreateTaskActivity.class));
-                    return true;
-                case R.id.menu_profile:
-                    startActivity(new Intent(GroupActivity.this, UserProfileActivity.class));
-                    return true;
-            }
-            return false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,4 +48,80 @@ public class GroupActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_home:
+                    startActivity(new Intent(GroupActivity.this, HomeActivity.class));
+                    return true;
+                case R.id.menu_create_task:
+                    Intent intent = new Intent(GroupActivity.this, CreateTaskActivity.class);
+                    Bundle b = new Bundle();
+                    b.putString("GroupName", groupname);
+                    b.putBoolean("inGroup", true);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                    return true;
+                case R.id.menu_profile:
+                    startActivity(new Intent(GroupActivity.this, UserProfileActivity.class));
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    private void initialize(){
+
+        DatabaseReference myRef = database.getReference("Groups/");
+
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                DatabaseReference groupRef;
+
+                for(DataSnapshot newSnap: dataSnapshot.getChildren()){
+
+                    //populate arrays of chores/tasks
+                    if(newSnap.getKey() == groupname) {
+
+                        groupRef = newSnap.getRef();
+                        initializeChores(groupRef);
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void initializeChores(DatabaseReference groupRef){
+
+        groupRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 }
