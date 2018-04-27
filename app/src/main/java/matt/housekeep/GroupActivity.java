@@ -53,20 +53,25 @@ public class GroupActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            Intent intent;
+            Bundle b = new Bundle();
+            b.putString("GroupName", groupname);
+            b.putBoolean("inGroup", true);
+
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     startActivity(new Intent(GroupActivity.this, HomeActivity.class));
                     return true;
                 case R.id.menu_create_task:
-                    Intent intent = new Intent(GroupActivity.this, CreateTaskActivity.class);
-                    Bundle b = new Bundle();
-                    b.putString("GroupName", groupname);
-                    b.putBoolean("inGroup", true);
+                    intent = new Intent(GroupActivity.this, CreateTaskActivity.class);
                     intent.putExtras(b);
                     startActivity(intent);
                     return true;
                 case R.id.menu_profile:
-                    startActivity(new Intent(GroupActivity.this, UserProfileActivity.class));
+                    intent = new Intent(GroupActivity.this, UserProfileActivity.class);
+                    intent.putExtras(b);
+                    startActivity(intent);
                     return true;
             }
             return false;
