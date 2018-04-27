@@ -72,6 +72,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="matt.housekeep.HomeActivity" />
         </activity>
+        <activity
+            android:name=".CreateGroupActivity"
+            android:label="@string/title_activity_create_group"
+            android:parentActivityName=".HomeActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="matt.housekeep.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-        String username = prefs.getString(getString(R.string.saved_username_key), "");
+        username = prefs.getString(getString(R.string.saved_username_key), "");
 
         DatabaseReference myRef = database.getReference("Users/" + username + "/Groups");
 
@@ -188,6 +188,14 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             startActivity(new Intent(HomeActivity.this, NotificationActivity.class));
             return true;
+        }
+
+        if(id == R.id.create_group){
+            startActivity(new Intent(HomeActivity.this, CreateGroupActivity.class));
+        }
+
+        if(id == R.id.settings){
+           // startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
