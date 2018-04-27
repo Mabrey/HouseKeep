@@ -9,6 +9,10 @@
     <color name="colorWhiteish">#F4F4F4</color>
     <color name="colorBlue">#3f89ff</color>
     <color name="colorRed">#ff3a3a</color>
+    <color name="colorJordyBlue">#8abdef</color>
+    <color name="colorShadow">#D3D3D3</color>
+    <color name="colorOffWhite">#E8E8E8</color>
+
 
 
 </resources>
