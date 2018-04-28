@@ -78,4 +78,10 @@
     <string name="new_password">New Password</string>
     <string name="confirm">Confirm</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
+
+    <!-- Strings related to Edit Profile -->
+    <string name="change_name">Change Name</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_picture">Change Profile Picture</string>
+
 </resources>
