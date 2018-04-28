@@ -160,7 +160,7 @@ public class AccountCreateActivity extends AppCompatActivity {
     }
 
 
-    private boolean isPasswordValid(String password) {
+    public static boolean isPasswordValid(String password) {
         Log.d("passsword: ", password);
         String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}";
         return password.matches(pattern);

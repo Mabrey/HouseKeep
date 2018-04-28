@@ -89,34 +89,13 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                success = checkPassword(currentPassword.getText().toString());
-                if(success)
-                    Log.d("CHECK_PASSWORD", "True");
-                else
-                    Log.d("CHECK_PASSWORD", "False");
-                if(success){
-
-                    success = confirmPassword(newPassword.getText().toString(),
-                            confirmPassword.getText().toString());
-
-                    if(success) {
-                        changePassword(confirmPassword.getText().toString());
-                        Toast.makeText(SettingsActivity.this, "Changed Password", Toast.LENGTH_LONG).show();
-
-                    }
-                    else {
-                        Toast.makeText(SettingsActivity.this, "Passwords Do Not Match", Toast.LENGTH_LONG).show();
-                    }
-                }
-                else {
-                    Toast.makeText(SettingsActivity.this, "Incorrect Password", Toast.LENGTH_LONG).show();
-                }
+                checkPassword(currentPassword.getText().toString());
 
             }
         });
     }
 
-    private boolean checkPassword(final String currentPassword){
+    private void checkPassword(final String currentPassword){
         DatabaseReference userRef = database.getReference("Users");
         Log.d("SETTINGS_NAME", username);
         userRef.child(username).addValueEventListener(new ValueEventListener() {
@@ -132,13 +111,17 @@ public class SettingsActivity extends AppCompatActivity {
 
                     if (hashedPassword.equals(org.mindrot.jbcrypt.BCrypt.hashpw(currentPassword, salt))){
 
-                        success = true;
+                        confirmPassword(newPassword.getText().toString(),
+                                confirmPassword.getText().toString());
+                        Log.d("correct_passwords", "passwords match");
 
                     }
                     else
+
+                        Toast.makeText(SettingsActivity.this, "Incorrect Password", Toast.LENGTH_LONG).show();
                         Log.d("wrong_passwords", hashedPassword + ", "+
                                 org.mindrot.jbcrypt.BCrypt.hashpw(currentPassword, salt));
-                        success = false;
+
 
                 }
                 else {
@@ -153,18 +136,20 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
-
-        return success;
     }
 
-    private boolean confirmPassword(String pass1, String pass2){
+    private void confirmPassword(String pass1, String pass2){
 
-        if(pass1.equals(pass2)){
-            return true;
+        boolean isValid = AccountCreateActivity.isPasswordValid(pass1);
+        if(pass1.equals(pass2) && isValid){
+            changePassword(confirmPassword.getText().toString());
+            Toast.makeText(SettingsActivity.this, "Changed Password", Toast.LENGTH_LONG).show();
         }
-        else
-            return false;
+        else {
+
+            Toast.makeText(SettingsActivity.this, "Passwords Do Not Match or Are Invalid",
+                    Toast.LENGTH_LONG).show();
+        }
 
 
     }
