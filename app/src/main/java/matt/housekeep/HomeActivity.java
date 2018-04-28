@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
                 for(DataSnapshot newSnap: dataSnapshot.getChildren()){
 
                     //Store names of groups
-                    groups.add(newSnap.getKey());
+                    groups.add((String) newSnap.getValue());
 
                 }
 
