@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +36,8 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private ArrayList<String> groups;
     private ArrayList<String> groupKeys;
+    private ArrayList<String> taskNames;
+    private ArrayList<String> choreNames;
     private String username;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -117,7 +120,54 @@ public class HomeActivity extends AppCompatActivity {
         });
         //Log.d("FETCHED", username);
 
+    }
 
+    private void initTasks(){
+
+        taskNames = new ArrayList<>();
+        DatabaseReference myRef = database.getReference("Users/" + username + "/Tasks");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot newSnap: dataSnapshot.getChildren()){
+                        taskNames.add(newSnap.getKey());
+                    }
+                    makeTaskList();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void initChores(){
+
+        choreNames = new ArrayList<>();
+        DatabaseReference myRef = database.getReference("Users/" + username + "/Chores");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot newSnap: dataSnapshot.getChildren()){
+                        choreNames.add(newSnap.getKey());
+                    }
+                    for(String name : choreNames)
+                        Log.d("CHORES", name);
+
+                    makeChoreList();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void makeGroupsButtons(){
@@ -162,6 +212,66 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void makeChoreList(){
+
+        LinearLayout layout = findViewById(R.id.chore_layout);
+
+        for(int i = 0; i < choreNames.size(); i++){
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            Button btn = new Button(this);
+            btn.setTextSize(18);
+            btn.setId(i);
+            final int id_ = btn.getId();
+            btn.setText(choreNames.get(id_));
+            layout.addView(btn, params);
+
+            btn = (findViewById(id_));
+            btn.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View view) {
+
+                    Toast.makeText(view.getContext(), "Completed " + choreNames.get(id_),
+                            Toast.LENGTH_SHORT).show();
+                   // Log.d("Key", b.getString("GroupKey"));
+                }
+            });
+
+        }
+    }
+
+    public void makeTaskList(){
+
+        LinearLayout layout = findViewById(R.id.task_layout);
+
+        for(int i = 0; i < taskNames.size(); i++){
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            Button btn = new Button(this);
+            btn.setTextSize(18);
+            btn.setId(i);
+            final int id_ = btn.getId();
+            btn.setText(taskNames.get(id_));
+            layout.addView(btn, params);
+
+            btn = (findViewById(id_));
+            btn.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View view) {
+
+                    Toast.makeText(view.getContext(), "Completed " + taskNames.get(id_),
+                            Toast.LENGTH_SHORT).show();
+                    // Log.d("Key", b.getString("GroupKey"));
+                }
+            });
+
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +288,8 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         init();
+        initTasks();
+        initChores();
 
     }
     @Override
