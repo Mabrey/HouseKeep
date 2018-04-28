@@ -52,7 +52,7 @@ public class NotificationActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.menu_home:
-                    
+
                     startActivity(new Intent(NotificationActivity.this, HomeActivity.class));
                     return true;
                 case R.id.menu_create_task:
