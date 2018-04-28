@@ -61,8 +61,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
         Bundle b = getIntent().getExtras();
-        groupname = b.getString("GroupName");
         inGroup = b.getBoolean("inGroup");
+        groupname = b.getString("GroupName");
+
 
         Button signOut= (Button) findViewById(R.id.sign_out);
         signOut.setOnClickListener(new View.OnClickListener() {
