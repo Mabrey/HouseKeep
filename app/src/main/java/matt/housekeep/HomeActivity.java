@@ -173,6 +173,7 @@ public class HomeActivity extends AppCompatActivity {
     private void makeGroupsButtons(){
 
         LinearLayout ll = findViewById(R.id.GroupLayout);
+        final int offset = 500;
 
         for(int i = 0; i < groups.size(); i++){
 
@@ -183,9 +184,9 @@ public class HomeActivity extends AppCompatActivity {
 
             Button btn = new Button(this);
             btn.setTextSize(18);
-            btn.setId(i);
+            btn.setId(i+500);
             final int id_ = btn.getId();
-            btn.setText(groups.get(id_));
+            btn.setText(groups.get(id_-500));
             ll.addView(btn, params);
 
             btn = (findViewById(id_));
@@ -196,14 +197,14 @@ public class HomeActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(HomeActivity.this, GroupActivity.class);
                     Bundle b = new Bundle();
-                    b.putString("GroupName", groups.get(id_));
-                    b.putString("GroupKey", groupKeys.get(id_));
+                    b.putString("GroupName", groups.get(id_-500));
+                    b.putString("GroupKey", groupKeys.get(id_-500));
                     b.putString("UserName", username);
                     intent.putExtras(b);
                     startActivity(intent);
 
                     Toast.makeText(view.getContext(), "Button clicked index: " +
-                    id_, Toast.LENGTH_SHORT).show();
+                            (id_-500), Toast.LENGTH_SHORT).show();
                     Log.d("Key", b.getString("GroupKey"));
                 }
             });
