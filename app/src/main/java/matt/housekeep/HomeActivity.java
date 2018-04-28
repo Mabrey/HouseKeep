@@ -215,6 +215,8 @@ public class HomeActivity extends AppCompatActivity {
     private void makeChoreList(){
 
         LinearLayout layout = findViewById(R.id.chore_layout);
+        //DatabaseReference myRef = database.getReference("Users/" + username + "/Chores");
+
 
         for(int i = 0; i < choreNames.size(); i++){
 
@@ -233,6 +235,9 @@ public class HomeActivity extends AppCompatActivity {
             btn.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View view) {
 
+                    database.getReference().child("Users").child(username).child("Chores").child(choreNames.get(id_)).removeValue();
+                    finish();
+                    startActivity(getIntent());
                     Toast.makeText(view.getContext(), "Completed " + choreNames.get(id_),
                             Toast.LENGTH_SHORT).show();
                    // Log.d("Key", b.getString("GroupKey"));
@@ -263,8 +268,11 @@ public class HomeActivity extends AppCompatActivity {
             btn.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View view) {
 
+                    database.getReference().child("Users").child(username).child("Tasks").child(taskNames.get(id_)).removeValue();
                     Toast.makeText(view.getContext(), "Completed " + taskNames.get(id_),
                             Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(getIntent());
                     // Log.d("Key", b.getString("GroupKey"));
                 }
             });
