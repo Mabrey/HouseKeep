@@ -45,12 +45,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
         android:checked="false"
+        app:layout_constraintBaseline_toBaselineOf="@+id/notificationsLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/notificationsLabel"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout3"
         tools:checked="false" />
 
     <TextView
@@ -62,23 +59,9 @@
         android:layout_marginTop="16dp"
         android:text="@string/notifications"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintEnd_toStartOf="@+id/notificationsSwitch"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout3" />
-
-    <TextView
-        android:id="@+id/changePassLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/change_password"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notificationsLabel" />
 
     <EditText
         android:id="@+id/currentPassword"
@@ -89,7 +72,7 @@
         android:ems="10"
         android:hint="@string/current_password"
         android:inputType="textPassword"
-        app:layout_constraintBaseline_toBaselineOf="@+id/changePassLabel"
+        app:layout_constraintBaseline_toBaselineOf="@+id/change_pass_label_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -122,8 +105,8 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
         android:text="@string/edit_profile"
         android:textAppearance="@style/TextAppearance.AppCompat"
@@ -135,8 +118,8 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:text="@string/privacy_policy"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,5 +137,31 @@
         android:text="@string/confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirm_password" />
+
+    <Button
+        android:id="@+id/change_pass_label_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/change_password"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notificationsLabel" />
+
+    <TextView
+        android:id="@+id/privacy_policy_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/privacy_policy_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/privacyPolicyButton" />
 
 </android.support.constraint.ConstraintLayout>

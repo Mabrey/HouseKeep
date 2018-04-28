@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +37,9 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText newPassword;
     private EditText confirmPassword;
     private Button confirmButton;
+    private Button changePassLabel;
+    private Button privacyPolicy;
+    private TextView privacyPolicyView;
     private boolean success;
     private String username;
     private SharedPreferences prefs;
@@ -110,6 +114,54 @@ public class SettingsActivity extends AppCompatActivity {
                 Intent intent = new Intent(SettingsActivity.this, EditProfileActivity.class);
                 intent.putExtras(b);
                 startActivity(intent);
+            }
+        });
+
+        privacyPolicyView = (TextView)findViewById(R.id.privacy_policy_information);
+
+        currentPassword.setVisibility(View.GONE);
+        newPassword.setVisibility(View.GONE);
+        confirmPassword.setVisibility(View.GONE);
+        confirmButton.setVisibility(View.GONE);
+        privacyPolicyView.setVisibility(View.GONE);
+
+        changePassLabel = (Button)findViewById(R.id.change_pass_label_button);
+        changePassLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(confirmButton.getVisibility() == View.GONE){
+
+                    currentPassword.setVisibility(View.VISIBLE);
+                    newPassword.setVisibility(View.VISIBLE);
+                    confirmPassword.setVisibility(View.VISIBLE);
+                    confirmButton.setVisibility(View.VISIBLE);
+                }
+                else {
+
+                    currentPassword.setVisibility(View.GONE);
+                    newPassword.setVisibility(View.GONE);
+                    confirmPassword.setVisibility(View.GONE);
+                    confirmButton.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        privacyPolicy = (Button)findViewById(R.id.privacyPolicyButton);
+        privacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(privacyPolicyView.getVisibility() == View.GONE){
+
+                    privacyPolicyView.setVisibility(View.VISIBLE);
+                }
+                else {
+
+                    privacyPolicyView.setVisibility(View.GONE);
+                }
+
             }
         });
     }

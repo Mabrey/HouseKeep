@@ -84,4 +84,6 @@
     <string name="change_username">Change Username</string>
     <string name="change_picture">Change Profile Picture</string>
 
+    <string name="privacy_policy_info">This application has been created to help us (the developers) learn how to use Android Studio and integrate a real-time database. We do not know what we are doing. Please, do not enter or share any sensative information through our application as we cannot guarantee proper security. While we promise to do our best to keep your information safe, do not enter any information you would not feel comfortable sharing publicly. We appreciate your understanding and hope you enjoy our application.</string>
+
 </resources>
