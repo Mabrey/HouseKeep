@@ -53,6 +53,7 @@
         android:layout_height="38dp"
         android:layout_alignTop="@+id/imageView"
         android:layout_toEndOf="@+id/confirmButton"
+        android:layout_toRightOf="@+id/confirmButton"
         android:background="@color/colorWhiteish"
         app:srcCompat="@drawable/ic_x_icon" />
 
