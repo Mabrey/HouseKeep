@@ -1,13 +1,9 @@
 package matt.housekeep;
 
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,7 +29,7 @@ public class AccountCreateActivity extends AppCompatActivity {
     private static final Random RANDOM = new SecureRandom();
     boolean validUsername = false;
 
-    private static class hashPass<T> {
+    public static class hashPass<T> {
         private String hashedPassword;
         private String salt;
 
@@ -41,7 +37,7 @@ public class AccountCreateActivity extends AppCompatActivity {
 
         }
 
-        private hashPass(String hashedPassword, String salt) {
+        protected hashPass(String hashedPassword, String salt) {
             this.hashedPassword = hashedPassword;
             this.salt = salt;
         }
@@ -72,7 +68,7 @@ public class AccountCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_create);
 
-        Button privacyButton = findViewById(R.id.privacyPolicyButton);
+        Button privacyButton = findViewById(R.id.editProfileButton);
         final TextView privacyPolicy = findViewById(R.id.privacyPolicy);
         privacyButton.setOnClickListener(new View.OnClickListener() {
             @Override

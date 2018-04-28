@@ -79,8 +79,6 @@ public class HomeActivity extends AppCompatActivity {
         prefs = this.getSharedPreferences(
                 getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
 
-
-
         username = prefs.getString(getString(R.string.saved_username_key), "");
 
         DatabaseReference myRef = database.getReference("Users/" + username + "/Groups");
@@ -188,19 +186,31 @@ public class HomeActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Intent intent;
+        Bundle b = new Bundle();
+        b.putString("GroupName", "");
+        b.putString("UserName", username);
+        b.putBoolean("inGroup", false);
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_notification) {
             Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(HomeActivity.this, NotificationActivity.class));
+            intent = new Intent(HomeActivity.this, NotificationActivity.class);
+            intent.putExtras(b);
+            startActivity(intent);
             return true;
         }
 
         if(id == R.id.create_group){
-            startActivity(new Intent(HomeActivity.this, CreateGroupActivity.class));
+            intent = new Intent(HomeActivity.this, CreateGroupActivity.class);
+            intent.putExtras(b);
+            startActivity(intent);
         }
 
         if(id == R.id.settings){
-           // startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+            intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            intent.putExtras(b);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
