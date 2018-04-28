@@ -140,7 +140,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                 else
                     destination = "userHome";
 
-                
+
 
                 //TODO First check for what type of task you are creating
                 switch (typeSpin.getSelectedItem().toString()){
