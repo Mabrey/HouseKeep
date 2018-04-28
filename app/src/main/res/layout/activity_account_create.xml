@@ -112,7 +112,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/privacyPolicyButton" />
+        app:layout_constraintTop_toBottomOf="@+id/editProfileButton" />
 
     <Button
         android:id="@+id/create_account_sign_up"
@@ -130,7 +130,7 @@
         app:layout_constraintTop_toBottomOf="@+id/privacyPolicy" />
 
     <Button
-        android:id="@+id/privacyPolicyButton"
+        android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

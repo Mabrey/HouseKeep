@@ -28,16 +28,26 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            Intent intent;
+            Bundle b = new Bundle();
+            b.putString("GroupName", "");
+            b.putBoolean("inGroup", false);
+
             switch (item.getItemId()) {
                 case R.id.menu_home:
-                    startActivity(new Intent(CreateTaskActivity.this, HomeActivity.class));
+                    intent = new Intent(CreateTaskActivity.this, HomeActivity.class);
+                    intent.putExtras(b);
+                    startActivity(intent);
                     return true;
                 case R.id.menu_create_task:
                     //Maybe contextually turn this into a different button/remove on this screen
                     //startActivity(new Intent(CreateTaskActivity.this, CreateTaskActivity.class));
                     return true;
                 case R.id.menu_profile:
-                    startActivity(new Intent(CreateTaskActivity.this, UserProfileActivity.class));
+                    intent = new Intent(CreateTaskActivity.this, UserProfileActivity.class);
+                    intent.putExtras(b);
+                    startActivity(intent);
                     return true;
             }
             return false;
@@ -62,11 +72,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         groupname = b.getString("GroupName");
-        boolean inGroup = b.getBoolean("inGroup");
-
-        if(inGroup){
-
-        }
+        //boolean inGroup = b.getBoolean("inGroup");
 
         String[] types = new String[]{"Task", "Chore", "Reminder"};
         String[] frequencies = new String[]{"Daily", "Weekly", "Monthly"};
