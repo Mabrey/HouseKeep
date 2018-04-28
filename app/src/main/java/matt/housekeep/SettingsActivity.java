@@ -1,6 +1,8 @@
 package matt.housekeep;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -36,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Button confirmButton;
     private boolean success;
     private String username;
+    private SharedPreferences prefs;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
@@ -49,8 +52,10 @@ public class SettingsActivity extends AppCompatActivity {
         //initialize
         success = false;
 
-        Bundle b = getIntent().getExtras();
-        username = b.getString("UserName");
+        prefs = this.getSharedPreferences(
+                getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
+
+        username = prefs.getString(getString(R.string.saved_username_key), "");
 
         //nav bar
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
@@ -93,6 +98,20 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
+
+        Button editProfile = (Button)findViewById(R.id.editProfileButton);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Bundle b = new Bundle();
+                b.putString("GroupName", "");
+                b.putString("UserName", username);
+                b.putBoolean("inGroup", false);
+                Intent intent = new Intent(SettingsActivity.this, EditProfileActivity.class);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
     }
 
     private void checkPassword(final String currentPassword){
@@ -116,11 +135,12 @@ public class SettingsActivity extends AppCompatActivity {
                         Log.d("correct_passwords", "passwords match");
 
                     }
-                    else
+                    else {
 
                         Toast.makeText(SettingsActivity.this, "Incorrect Password", Toast.LENGTH_LONG).show();
-                        Log.d("wrong_passwords", hashedPassword + ", "+
+                        Log.d("wrong_passwords", hashedPassword + ", " +
                                 org.mindrot.jbcrypt.BCrypt.hashpw(currentPassword, salt));
+                    }
 
 
                 }
@@ -164,6 +184,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+
+
     private AccountCreateActivity.hashPass hashPassword(String password) {
         String salt = org.mindrot.jbcrypt.BCrypt.gensalt();
         String hashedPassword = org.mindrot.jbcrypt.BCrypt.hashpw(password, salt);
@@ -178,17 +200,25 @@ public class SettingsActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
             Intent intent;
+            Bundle b = new Bundle();
+            b.putString("GroupName", "");
+            b.putString("UserName", username);
+            b.putBoolean("inGroup", false);
 
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     intent = new Intent(SettingsActivity.this, HomeActivity.class);
+                    intent.putExtras(b);
+                    startActivity(intent);
                     return true;
                 case R.id.menu_create_task:
                     intent = new Intent(SettingsActivity.this, CreateTaskActivity.class);
+                    intent.putExtras(b);
                     startActivity(intent);
                     return true;
                 case R.id.menu_profile:
                     intent = new Intent(SettingsActivity.this, UserProfileActivity.class);
+                    intent.putExtras(b);
                     startActivity(intent);
                     return true;
             }

@@ -76,8 +76,8 @@
             android:name=".CreateGroupActivity"
             android:label="@string/title_activity_create_group"
             android:parentActivityName=".HomeActivity"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="matt.housekeep.HomeActivity" />
@@ -90,6 +90,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="matt.housekeep.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="matt.housekeep.SettingsActivity" />
         </activity>
     </application>
 
