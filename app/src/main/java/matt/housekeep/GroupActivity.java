@@ -27,6 +27,7 @@ public class GroupActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private String groupname;
     private String username;
+    private String groupKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class GroupActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         groupname = b.getString("GroupName");
+        groupKey = b.getString("GroupKey");
         username = b.getString("UserName");
 
         //sets title in ActionBar to the groupname stored in the bundle
@@ -57,6 +59,7 @@ public class GroupActivity extends AppCompatActivity {
             Intent intent;
             Bundle b = new Bundle();
             b.putString("GroupName", groupname);
+            b.putString("GroupKey", groupKey);
             b.putBoolean("inGroup", true);
 
             switch (item.getItemId()) {

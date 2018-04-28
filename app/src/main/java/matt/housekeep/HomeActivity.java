@@ -34,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private ArrayList<String> groups;
+    private ArrayList<String> groupKeys;
     private String username;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -67,8 +68,9 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    private void setGroups(ArrayList<String> groups){
+    private void setGroups(ArrayList<String> groups, ArrayList<String> groupKeys){
         this.groups = groups;
+        this.groupKeys = groupKeys;
     }
 
     //retrieve basic userdata from database to make buttons for groups and list
@@ -84,6 +86,8 @@ public class HomeActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Users/" + username + "/Groups");
 
         final ArrayList<String> groups = new ArrayList<>();
+        final ArrayList<String> groupKeys = new ArrayList<>();
+
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -93,10 +97,11 @@ public class HomeActivity extends AppCompatActivity {
 
                     //Store names of groups
                     groups.add((String) newSnap.getValue());
-
+                    groupKeys.add(newSnap.getKey());
+                    Log.d("Keys", newSnap.getKey());
                 }
 
-                setGroups(groups);
+                setGroups(groups, groupKeys);
 
                 for(String group: groups){
                     Log.d("GROUPS", group);
@@ -142,12 +147,14 @@ public class HomeActivity extends AppCompatActivity {
                     Intent intent = new Intent(HomeActivity.this, GroupActivity.class);
                     Bundle b = new Bundle();
                     b.putString("GroupName", groups.get(id_));
+                    b.putString("GroupKey", groupKeys.get(id_));
                     b.putString("UserName", username);
                     intent.putExtras(b);
                     startActivity(intent);
 
                     Toast.makeText(view.getContext(), "Button clicked index: " +
                     id_, Toast.LENGTH_SHORT).show();
+                    Log.d("Key", b.getString("GroupKey"));
                 }
             });
 

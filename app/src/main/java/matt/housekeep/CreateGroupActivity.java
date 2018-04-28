@@ -102,6 +102,8 @@ public class CreateGroupActivity extends AppCompatActivity {
                             } else { //username doesn't exist
                                 Toast.makeText(getApplicationContext(), "Invalid Username Entered" , Toast.LENGTH_SHORT).show();
                             }
+
+
                         }
 
                         @Override
@@ -111,6 +113,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     });
 
                 }
+                finish();
             }
         });
 
