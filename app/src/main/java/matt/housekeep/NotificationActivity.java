@@ -104,7 +104,7 @@ public class NotificationActivity extends AppCompatActivity {
                     for(String name : invites)
                         Log.d("Invites", name);
 
-                    makeInviteList();
+                  //  makeInviteList();
                 }
             }
 
@@ -120,6 +120,7 @@ public class NotificationActivity extends AppCompatActivity {
         b.putBoolean("inGroup", false);
     }
 
+    /*
     private void makeInviteList(){
 
         LinearLayout layout = findViewById(R.id.ScrollLin);
@@ -150,7 +151,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         }
     }
-
+*/
 
 
 
