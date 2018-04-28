@@ -157,7 +157,7 @@ public class AccountCreateActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Account Created", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean isUsernameValid(String username) {
+    protected boolean isUsernameValid(String username) {
 
         String pattern = "(?=\\S+$).{8,20}";
         return username.matches(pattern);

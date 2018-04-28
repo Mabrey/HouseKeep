@@ -92,7 +92,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/CreateTaskButton"
+        android:id="@+id/CreateGroupButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
