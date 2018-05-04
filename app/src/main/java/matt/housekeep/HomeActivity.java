@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //public class HomeActivity extends AppCompatActivity
 public class HomeActivity extends AppCompatActivity {
@@ -71,6 +72,27 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.homeLayout);
+        layout.requestFocus();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        init();
+        initTasks();
+        initChores();
+
+    }
+
+
     private void setGroups(ArrayList<String> groups, ArrayList<String> groupKeys){
         this.groups = groups;
         this.groupKeys = groupKeys;
@@ -88,13 +110,17 @@ public class HomeActivity extends AppCompatActivity {
 
         DatabaseReference myRef = database.getReference("Users/" + username + "/Groups");
 
-        final ArrayList<String> groups = new ArrayList<>();
+        groups = new ArrayList<>();
         final ArrayList<String> groupKeys = new ArrayList<>();
 
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                groups.clear();
+                groupKeys.clear();
+                LinearLayout ll = findViewById(R.id.GroupLayout);
+                ll.removeAllViews();
 
                 for(DataSnapshot newSnap: dataSnapshot.getChildren()){
 
@@ -130,6 +156,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    taskNames.clear();
+                    LinearLayout taskLayout = findViewById(R.id.task_layout);
+                    taskLayout.removeAllViews();
+
                     for(DataSnapshot newSnap: dataSnapshot.getChildren()){
                         taskNames.add(newSnap.getKey());
                     }
@@ -153,6 +183,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    choreNames.clear();
+                    LinearLayout choreLayout = findViewById(R.id.chore_layout);
+                    choreLayout.removeAllViews();
+
                     for(DataSnapshot newSnap: dataSnapshot.getChildren()){
                         choreNames.add(newSnap.getKey());
                     }
@@ -215,7 +249,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void makeChoreList(){
 
-        LinearLayout layout = findViewById(R.id.chore_layout);
+        final LinearLayout layout = findViewById(R.id.chore_layout);
         //DatabaseReference myRef = database.getReference("Users/" + username + "/Chores");
 
 
@@ -237,8 +271,8 @@ public class HomeActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     database.getReference().child("Users").child(username).child("Chores").child(choreNames.get(id_)).removeValue();
-                    finish();
-                    startActivity(getIntent());
+                    layout.removeView((View) findViewById(id_));
+
                     Toast.makeText(view.getContext(), "Completed " + choreNames.get(id_),
                             Toast.LENGTH_SHORT).show();
                    // Log.d("Key", b.getString("GroupKey"));
@@ -250,7 +284,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void makeTaskList(){
 
-        LinearLayout layout = findViewById(R.id.task_layout);
+        final LinearLayout layout = findViewById(R.id.task_layout);
 
         for(int i = 0; i < taskNames.size(); i++){
 
@@ -270,11 +304,10 @@ public class HomeActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     database.getReference().child("Users").child(username).child("Tasks").child(taskNames.get(id_)).removeValue();
+                    layout.removeView((View) findViewById(id_));
                     Toast.makeText(view.getContext(), "Completed " + taskNames.get(id_),
                             Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(getIntent());
-                    // Log.d("Key", b.getString("GroupKey"));
+
                 }
             });
 
@@ -282,25 +315,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.homeLayout);
-        layout.requestFocus();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
-
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        init();
-        initTasks();
-        initChores();
-
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.action_bar_buttons, menu);

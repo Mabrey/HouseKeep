@@ -1,5 +1,6 @@
 package matt.housekeep;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,12 +12,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -30,13 +35,14 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private SharedPreferences prefs;
-    private ArrayList<String> invites;
+    private ArrayList<InviteMessage> invites = new ArrayList<>();
     private String username;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -81,9 +87,11 @@ public class NotificationActivity extends AppCompatActivity {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        ArrayAdapter<InviteMessage> adapter = new propertyArrayAdapter(this, 0, invites);
+        ListView listView = (ListView) findViewById(R.id.customListView);
+        listView.setAdapter(adapter);
 
-
-        initNotifs();
+        //initNotifs();
     }
 
     private void initNotifs(){
@@ -92,17 +100,15 @@ public class NotificationActivity extends AppCompatActivity {
                 getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
 
         username = prefs.getString(getString(R.string.saved_username_key), "");
-        invites = new ArrayList<>();
         DatabaseReference myRef = database.getReference("Users/" + username + "/Chores");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot newSnap: dataSnapshot.getChildren()){
-                        invites.add(newSnap.getKey());
+                        invites.add(new InviteMessage(newSnap.getValue().toString(),newSnap.getKey().toString()));
                     }
-                    for(String name : invites)
-                        Log.d("Invites", name);
+
 
                   //  makeInviteList();
                 }
@@ -153,11 +159,32 @@ public class NotificationActivity extends AppCompatActivity {
     }
 */
 
+    class propertyArrayAdapter extends ArrayAdapter<InviteMessage> {
 
+        private Context context;
+        private List<InviteMessage> inviteMessageList;
 
+        //constructor, call on creation
+        public propertyArrayAdapter(Context context, int resource, ArrayList<InviteMessage> objects) {
+            super(context, resource, objects);
 
+            this.context = context;
+            this.inviteMessageList = objects;
+        }
 
+        public View getView(int position, View convertView, ViewGroup parent) {
 
+            //get the property we are displaying
+            InviteMessage invites = inviteMessageList.get(position);
 
+            //get the inflater and inflate the XML layout for each item
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.invitation_button, null);
 
+            TextView groupName = (TextView) view.findViewById(R.id.inviteButtonGroupName);
+            groupName.setText(invites.getGroupName());
+
+            return view;
+        }
+    }
 }
