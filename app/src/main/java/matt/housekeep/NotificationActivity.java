@@ -45,6 +45,8 @@ public class NotificationActivity extends AppCompatActivity {
     private ArrayList<InviteMessage> invites = new ArrayList<>();
     private String username;
 
+    //ListView NotificationView = findViewById(R.id.NotificationListView);
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -87,11 +89,11 @@ public class NotificationActivity extends AppCompatActivity {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        ArrayAdapter<InviteMessage> adapter = new propertyArrayAdapter(this, 0, invites);
-        ListView listView = (ListView) findViewById(R.id.customListView);
-        listView.setAdapter(adapter);
+        //ArrayAdapter<InviteMessage> adapter = new propertyArrayAdapter(this, 0, invites);
 
-        //initNotifs();
+        //NotificationView.setAdapter(adapter);
+
+        initNotifs();
     }
 
     private void initNotifs(){
@@ -100,17 +102,27 @@ public class NotificationActivity extends AppCompatActivity {
                 getString(R.string.shared_prefs_key), Context.MODE_PRIVATE);
 
         username = prefs.getString(getString(R.string.saved_username_key), "");
-        DatabaseReference myRef = database.getReference("Users/" + username + "/Chores");
+        DatabaseReference myRef = database.getReference("Users/" + username + "/Invites");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    LinearLayout Notification = findViewById(R.id.NotificationLL);
+                    Notification.removeAllViews();
                     for(DataSnapshot newSnap: dataSnapshot.getChildren()){
-                        invites.add(new InviteMessage(newSnap.getValue().toString(),newSnap.getKey().toString()));
+                        InviteMessage invite = new InviteMessage(getApplicationContext(), newSnap.child("Name").getValue().toString(), newSnap.getKey().toString());
+                        //View InviteMessage = invite.rootView;
+                        View InviteMessage = LayoutInflater.from(getApplicationContext()).inflate(R.layout.invitation_button, Notification, false);
+
+                        TextView groupName = InviteMessage.findViewById(R.id.inviteButtonGroupName);
+                        groupName.setText(newSnap.child("Name").getValue().toString());
+                        //invites.add(invite);
+
+                        Notification.addView(InviteMessage);
                     }
 
 
-                  //  makeInviteList();
+                    //makeInviteList();
                 }
             }
 
@@ -126,10 +138,10 @@ public class NotificationActivity extends AppCompatActivity {
         b.putBoolean("inGroup", false);
     }
 
-    /*
+
     private void makeInviteList(){
 
-        LinearLayout layout = findViewById(R.id.ScrollLin);
+        LinearLayout layout = findViewById(R.id.NotificationLL);
 
         for(int i = 0; i < invites.size(); i++){
 
@@ -141,7 +153,6 @@ public class NotificationActivity extends AppCompatActivity {
             btn.setTextSize(18);
             btn.setId(i);
             final int id_ = btn.getId();
-            btn.setText(invites.get(id_));
             layout.addView(btn, params);
 
             btn = (findViewById(id_));
@@ -157,7 +168,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         }
     }
-*/
+
 
     class propertyArrayAdapter extends ArrayAdapter<InviteMessage> {
 
