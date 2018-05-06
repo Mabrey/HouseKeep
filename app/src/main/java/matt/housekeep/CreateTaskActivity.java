@@ -31,6 +31,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
     private Spinner typeSpinner;
     private Spinner frequencySpinner;
+    private Spinner daysSpinner;
     private String groupname;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -79,6 +80,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         typeSpinner = findViewById(R.id.typeSpinner);
         frequencySpinner = findViewById(R.id.frequencySpinner);
+        daysSpinner = findViewById(R.id.dayOfMonthSpinner);
 
         final Bundle b = getIntent().getExtras();
         groupname = b.getString("GroupName");
@@ -86,12 +88,17 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         String[] types = new String[]{"Task", "Chore", "Reminder"};
         String[] frequencies = new String[]{"Daily", "Weekly", "Monthly"};
+        String[] daysOfMonth = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
 
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
         ArrayAdapter<String> freqAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, frequencies);
+        ArrayAdapter<String> daysAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, daysOfMonth);
 
         typeSpinner.setAdapter(typesAdapter);
         frequencySpinner.setAdapter(freqAdapter);
+        daysSpinner.setAdapter(daysAdapter);
 
         freqLabel = (TextView)findViewById(R.id.frequencyTextView);
 
@@ -101,8 +108,10 @@ public class CreateTaskActivity extends AppCompatActivity {
                 switch(i){
                     case 0:     //task
                     case 2:{    //reminder
+
                         freqLabel.setVisibility(View.GONE);
                         frequencySpinner.setVisibility(View.GONE);
+                        daysSpinner.setVisibility(View.GONE);
                         findViewById(R.id.sunButton).setVisibility(View.GONE);
                         findViewById(R.id.monButton).setVisibility(View.GONE);
                         findViewById(R.id.tuesButton).setVisibility(View.GONE);
@@ -111,18 +120,21 @@ public class CreateTaskActivity extends AppCompatActivity {
                         findViewById(R.id.fridayButton).setVisibility(View.GONE);
                         findViewById(R.id.satButton).setVisibility(View.GONE);
                         break;
+
                     }
                     case 1: {
+                        checkifWeeklyFrequency();
+
                         freqLabel.setVisibility(View.VISIBLE);
                         frequencySpinner.setVisibility(View.VISIBLE);
-                        findViewById(R.id.sunButton).setVisibility(View.VISIBLE);
+                       /* findViewById(R.id.sunButton).setVisibility(View.VISIBLE);
                         findViewById(R.id.monButton).setVisibility(View.VISIBLE);
                         findViewById(R.id.tuesButton).setVisibility(View.VISIBLE);
                         findViewById(R.id.wedButton).setVisibility(View.VISIBLE);
                         findViewById(R.id.thursButton).setVisibility(View.VISIBLE);
                         findViewById(R.id.fridayButton).setVisibility(View.VISIBLE);
                         findViewById(R.id.satButton).setVisibility(View.VISIBLE);
-
+                        */
                     }
                 }
             }
@@ -249,6 +261,60 @@ public class CreateTaskActivity extends AppCompatActivity {
 
 
                 finish();
+            }
+        });
+    }
+
+    private void checkifWeeklyFrequency() {
+        frequencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch(i){
+                    case 0:     //daily
+                    {
+                        daysSpinner.setVisibility(View.GONE);
+                        findViewById(R.id.dayOfMonthView).setVisibility(View.GONE);
+                        findViewById(R.id.sunButton).setVisibility(View.GONE);
+                        findViewById(R.id.monButton).setVisibility(View.GONE);
+                        findViewById(R.id.tuesButton).setVisibility(View.GONE);
+                        findViewById(R.id.wedButton).setVisibility(View.GONE);
+                        findViewById(R.id.thursButton).setVisibility(View.GONE);
+                        findViewById(R.id.fridayButton).setVisibility(View.GONE);
+                        findViewById(R.id.satButton).setVisibility(View.GONE);
+                        break;
+                    }
+                    case 2:{    //monthly
+
+                        daysSpinner.setVisibility(View.VISIBLE);
+                        findViewById(R.id.dayOfMonthView).setVisibility(View.VISIBLE);
+                        findViewById(R.id.sunButton).setVisibility(View.GONE);
+                        findViewById(R.id.monButton).setVisibility(View.GONE);
+                        findViewById(R.id.tuesButton).setVisibility(View.GONE);
+                        findViewById(R.id.wedButton).setVisibility(View.GONE);
+                        findViewById(R.id.thursButton).setVisibility(View.GONE);
+                        findViewById(R.id.fridayButton).setVisibility(View.GONE);
+                        findViewById(R.id.satButton).setVisibility(View.GONE);
+                        break;
+
+                    }
+                    case 1: {   //weekly
+                        daysSpinner.setVisibility(View.GONE);
+                        findViewById(R.id.dayOfMonthView).setVisibility(View.GONE);
+                        findViewById(R.id.sunButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.monButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.tuesButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.wedButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.thursButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.fridayButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.satButton).setVisibility(View.VISIBLE);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }

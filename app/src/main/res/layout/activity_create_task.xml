@@ -118,7 +118,7 @@
         android:text="@string/task_description"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sunButton" />
+        app:layout_constraintTop_toBottomOf="@+id/dayOfMonthView" />
 
     <EditText
         android:id="@+id/createTaskName"
@@ -253,5 +253,29 @@
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/fridayButton"
         app:layout_constraintTop_toTopOf="@+id/fridayButton" />
+
+    <Spinner
+        android:id="@+id/dayOfMonthSpinner"
+        android:layout_width="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dayOfMonthView" />
+
+    <TextView
+        android:id="@+id/dayOfMonthView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Day of Month"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sunButton" />
 
 </android.support.constraint.ConstraintLayout>
