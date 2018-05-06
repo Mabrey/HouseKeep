@@ -105,7 +105,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/frequencyTextView" />
 
@@ -119,7 +118,7 @@
         android:text="@string/task_description"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mondayButton" />
+        app:layout_constraintTop_toBottomOf="@+id/sunButton" />
 
     <EditText
         android:id="@+id/createTaskName"
@@ -159,47 +158,63 @@
         app:layout_constraintTop_toTopOf="@+id/textView7" />
 
     <Button
-        android:id="@+id/mondayButton"
+        android:id="@+id/sunButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/round_button"
         android:text="S"
-        app:layout_constraintTop_toBottomOf="@+id/frequencyTextView"
-        tools:layout_editor_absoluteX="16dp" />
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/frequencyTextView"
+        app:layout_constraintTop_toBottomOf="@+id/frequencyTextView" />
 
     <Button
-        android:id="@+id/tuesdayButton"
+        android:id="@+id/monButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="M"
-        app:layout_constraintStart_toEndOf="@+id/mondayButton"
-        app:layout_constraintTop_toTopOf="@+id/mondayButton" />
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/sunButton"
+        app:layout_constraintTop_toTopOf="@+id/sunButton" />
 
     <Button
-        android:id="@+id/wednesdayButton"
+        android:id="@+id/tuesButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="T"
-        app:layout_constraintStart_toEndOf="@+id/tuesdayButton"
-        app:layout_constraintTop_toTopOf="@+id/tuesdayButton" />
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/monButton"
+        app:layout_constraintTop_toTopOf="@+id/monButton" />
 
     <Button
-        android:id="@+id/thurdayButton"
+        android:id="@+id/wedButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="W"
-        app:layout_constraintStart_toEndOf="@+id/wednesdayButton"
-        app:layout_constraintTop_toTopOf="@+id/wednesdayButton" />
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/tuesButton"
+        app:layout_constraintTop_toTopOf="@+id/tuesButton" />
+
+    <Button
+        android:id="@+id/thursButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/round_button"
+        android:text="Th"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/wedButton"
+        app:layout_constraintTop_toTopOf="@+id/wedButton" />
 
     <Button
         android:id="@+id/fridayButton"
@@ -208,29 +223,20 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
-        android:text="Th"
-        app:layout_constraintStart_toEndOf="@+id/thurdayButton"
-        app:layout_constraintTop_toTopOf="@+id/thurdayButton" />
-
-    <Button
-        android:id="@+id/saturdayButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/round_button"
         android:text="F"
-        app:layout_constraintStart_toEndOf="@+id/fridayButton"
-        app:layout_constraintTop_toTopOf="@+id/fridayButton" />
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/thursButton"
+        app:layout_constraintTop_toTopOf="@+id/thursButton" />
 
     <Button
-        android:id="@+id/sundayButton"
+        android:id="@+id/satButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="S"
-        app:layout_constraintStart_toEndOf="@+id/saturdayButton"
-        app:layout_constraintTop_toTopOf="@+id/saturdayButton" />
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/fridayButton"
+        app:layout_constraintTop_toTopOf="@+id/fridayButton" />
 </android.support.constraint.ConstraintLayout>

@@ -17,13 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class CreateTaskActivity extends AppCompatActivity {
 
@@ -106,11 +102,26 @@ public class CreateTaskActivity extends AppCompatActivity {
                     case 2:{    //reminder
                         freqLabel.setVisibility(View.GONE);
                         frequencySpinner.setVisibility(View.GONE);
+                        findViewById(R.id.sunButton).setVisibility(View.GONE);
+                        findViewById(R.id.monButton).setVisibility(View.GONE);
+                        findViewById(R.id.tuesButton).setVisibility(View.GONE);
+                        findViewById(R.id.wedButton).setVisibility(View.GONE);
+                        findViewById(R.id.thursButton).setVisibility(View.GONE);
+                        findViewById(R.id.fridayButton).setVisibility(View.GONE);
+                        findViewById(R.id.satButton).setVisibility(View.GONE);
                         break;
                     }
                     case 1: {
                         freqLabel.setVisibility(View.VISIBLE);
                         frequencySpinner.setVisibility(View.VISIBLE);
+                        findViewById(R.id.sunButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.monButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.tuesButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.wedButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.thursButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.fridayButton).setVisibility(View.VISIBLE);
+                        findViewById(R.id.satButton).setVisibility(View.VISIBLE);
+
                     }
                 }
             }
