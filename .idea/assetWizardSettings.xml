@@ -35,10 +35,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\matth\AndroidStudioProjects\HouseKeep\icons\cancel.png" />
-                                      <entry key="outputName" value="ic_x_icon" />
+                                      <entry key="imageAsset" value="C:\Users\Caleb Moriarty\Documents\Class Stuff\Spring 2018\CSE 120\HouseKeep\icons\notificationBellring.png" />
+                                      <entry key="outputName" value="ic_notification_bell_ring" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="ff002f" />
+                                      <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -99,6 +99,11 @@
                 </map>
               </option>
             </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState />
           </value>
         </entry>
       </map>
