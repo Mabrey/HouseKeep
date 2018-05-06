@@ -209,58 +209,6 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
-    private void initialize(){
-
-        DatabaseReference myRef = database.getReference("Groups/");
-
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                DatabaseReference groupRef;
-
-                for(DataSnapshot newSnap: dataSnapshot.getChildren()){
-
-                    //populate arrays of chores/tasks
-                    if(newSnap.getKey() == groupname) {
-
-                        groupRef = newSnap.getRef();
-                        initializeChores(groupRef);
-                        break;
-
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void initializeChores(DatabaseReference groupRef){
-
-        groupRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
     private void confirmLeave(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);

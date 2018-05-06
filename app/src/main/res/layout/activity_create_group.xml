@@ -65,12 +65,17 @@
 
     <ScrollView
         android:id="@+id/inviteScroll"
-        android:layout_width="145dp"
-        android:layout_height="303dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/CreateGroupButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addMembers"
         app:layout_constraintTop_toBottomOf="@+id/GroupName">
 
         <LinearLayout
@@ -96,19 +101,16 @@
         android:id="@+id/addMembers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:background="@color/colorWhiteish"
-        app:layout_constraintEnd_toStartOf="@+id/inviteScroll"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="@+id/textView5"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <EditText
         android:id="@+id/GroupName"
-        android:layout_width="145dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -117,6 +119,7 @@
         android:hint="Group Name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/inviteScroll"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <Button

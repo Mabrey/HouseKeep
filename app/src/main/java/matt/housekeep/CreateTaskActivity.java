@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -132,6 +133,13 @@ public class CreateTaskActivity extends AppCompatActivity {
             }
         });
 
+        ToggleButton sunday = findViewById(R.id.sunButton);
+        ToggleButton monday = findViewById(R.id.monButton);
+        ToggleButton tuesday = findViewById(R.id.tuesButton);
+        ToggleButton wednesday = findViewById(R.id.wedButton);
+        ToggleButton thursday = findViewById(R.id.thursButton);
+        ToggleButton friday = findViewById(R.id.fridayButton);
+        ToggleButton saturday = findViewById(R.id.satButton);
 
         Button createTask = findViewById(R.id.CreateTaskButton);
         createTask.setOnClickListener(new View.OnClickListener() {

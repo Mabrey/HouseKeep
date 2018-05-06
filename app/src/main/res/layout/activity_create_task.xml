@@ -157,18 +157,20 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/textView7" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/sunButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/round_button"
         android:text="S"
+        android:textOff="S"
+        android:textOn="S"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/frequencyTextView"
         app:layout_constraintTop_toBottomOf="@+id/frequencyTextView" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/monButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -176,11 +178,13 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="M"
+        android:textOff="M"
+        android:textOn="M"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/sunButton"
         app:layout_constraintTop_toTopOf="@+id/sunButton" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/tuesButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -188,11 +192,13 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="T"
+        android:textOff="T"
+        android:textOn="T"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/monButton"
         app:layout_constraintTop_toTopOf="@+id/monButton" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/wedButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -200,11 +206,13 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="W"
+        android:textOff="W"
+        android:textOn="W"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/tuesButton"
         app:layout_constraintTop_toTopOf="@+id/tuesButton" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/thursButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -212,11 +220,13 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="Th"
+        android:textOff="Th"
+        android:textOn="Th"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/wedButton"
         app:layout_constraintTop_toTopOf="@+id/wedButton" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/fridayButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -224,11 +234,13 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="F"
+        android:textOff="F"
+        android:textOn="F"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/thursButton"
         app:layout_constraintTop_toTopOf="@+id/thursButton" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/satButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -236,7 +248,10 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/round_button"
         android:text="S"
+        android:textOff="S"
+        android:textOn="S"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/fridayButton"
         app:layout_constraintTop_toTopOf="@+id/fridayButton" />
+
 </android.support.constraint.ConstraintLayout>
