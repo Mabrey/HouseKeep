@@ -264,6 +264,7 @@ public class GroupActivity extends AppCompatActivity {
         Bundle b = new Bundle();
         b.putString("GroupName", groupname);
         b.putString("UserName", username);
+        b.putString("GroupKey", groupKey);
         b.putBoolean("inGroup", true);
 
         //noinspection SimplifiableIfStatement
