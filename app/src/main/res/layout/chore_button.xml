@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/choreButtonLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background = "@drawable/shadowed_button"
-    android:padding = "5dp">
+    android:background="@drawable/shadowed_button"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/choreName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-
+        android:layout_toEndOf="@+id/imageView"
+        android:paddingHorizontal="5dp"
         android:text="Wash the Dishes"
         android:textSize="20sp">
 
@@ -22,10 +23,11 @@
         android:id="@+id/userResponsible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/choreName"
-        android:layout_alignStart="@+id/choreName"
         android:layout_below="@+id/choreName"
-        android:text="thelongestusername">
+        android:layout_toEndOf="@+id/imageView"
+        android:paddingHorizontal="5dp"
+        android:text="thelongestusername"
+        android:textSize="16sp">
 
     </TextView>
 
@@ -34,9 +36,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/choreName"
-        android:layout_toEndOf="@id/userResponsible"
-        android:layout_toRightOf="@+id/userResponsible"
-        android:text="  4/22/2018">
+        android:layout_toEndOf="@+id/userResponsible"
+        android:paddingHorizontal="5dp"
+        android:text="5/5"
+        android:textSize="16sp">
 
     </TextView>
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/choreCompleteTime"
+        android:padding="5dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="47dp"
+        android:layout_height="49dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/ic_profile" />
+
 </RelativeLayout>
