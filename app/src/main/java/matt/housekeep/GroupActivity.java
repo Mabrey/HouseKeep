@@ -268,14 +268,21 @@ public class GroupActivity extends AppCompatActivity {
         b.putBoolean("inGroup", true);
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.invite_member) {
+        if(id == R.id.group_info) {
+            intent = new Intent(GroupActivity.this, GroupInfoActivity.class);
+            intent.putExtras(b);
+            startActivity(intent);
+            return true;
+        }
+
+        else if (id == R.id.invite_member) {
             intent = new Intent(GroupActivity.this, InviteMembersActivity.class);
             intent.putExtras(b);
             startActivity(intent);
             return true;
         }
 
-        if(id == R.id.leave_group){
+        else if(id == R.id.leave_group){
 
             DatabaseReference userRef = database.getReference("Users/" + username + "/Groups");
             DatabaseReference groupsRef = database.getReference("Groups/" + groupKey);

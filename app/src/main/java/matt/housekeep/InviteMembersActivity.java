@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,7 @@ public class InviteMembersActivity extends AppCompatActivity {
     private String groupKey;
     private String username;
     private int addMemberCount = 0;
+    private BottomNavigationView bottomNavigationView;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
@@ -114,6 +117,10 @@ public class InviteMembersActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     public EditText createNewEditText(int memberCount) {
@@ -124,6 +131,38 @@ public class InviteMembersActivity extends AppCompatActivity {
         newMem.setId(R.id.member0 + memberCount);
         return newMem;
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            Intent intent;
+            Bundle b = new Bundle();
+            b.putString("Username", username);
+            b.putString("GroupName", groupname);
+            b.putString("GroupKey", groupKey);
+            b.putBoolean("inGroup", true);
+
+            switch (item.getItemId()) {
+                case R.id.menu_home:
+                    startActivity(new Intent(InviteMembersActivity.this, HomeActivity.class));
+                    return true;
+                case R.id.menu_create_task:
+                    intent = new Intent(InviteMembersActivity.this, CreateTaskActivity.class);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                    return true;
+                case R.id.menu_profile:
+                    intent = new Intent(InviteMembersActivity.this, UserProfileActivity.class);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

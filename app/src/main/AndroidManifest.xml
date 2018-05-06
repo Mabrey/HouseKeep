@@ -109,6 +109,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="matt.housekeep.GroupActivity" />
         </activity>
+        <activity
+            android:name=".GroupInfoActivity"
+            android:label="@string/title_activity_group_info"
+            android:parentActivityName=".GroupActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="matt.housekeep.GroupActivity" />
+        </activity>
     </application>
 
 </manifest>
