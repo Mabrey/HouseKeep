@@ -133,13 +133,68 @@ public class CreateTaskActivity extends AppCompatActivity {
             }
         });
 
-        ToggleButton sunday = findViewById(R.id.sunButton);
-        ToggleButton monday = findViewById(R.id.monButton);
-        ToggleButton tuesday = findViewById(R.id.tuesButton);
-        ToggleButton wednesday = findViewById(R.id.wedButton);
-        ToggleButton thursday = findViewById(R.id.thursButton);
-        ToggleButton friday = findViewById(R.id.fridayButton);
-        ToggleButton saturday = findViewById(R.id.satButton);
+        final ToggleButton sunday = findViewById(R.id.sunButton);
+        sunday.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (sunday.isChecked())
+                    sunday.setBackground(getResources().getDrawable(R.drawable.round_button));
+                else sunday.setBackground(getResources().getDrawable(R.drawable.false_round_button));
+            }
+        });
+
+        final ToggleButton monday = findViewById(R.id.monButton);
+        monday.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (monday.isChecked())
+                    monday.setBackground(getResources().getDrawable(R.drawable.round_button));
+                else monday.setBackground(getResources().getDrawable(R.drawable.false_round_button));
+            }
+        });
+
+        final ToggleButton tuesday = findViewById(R.id.tuesButton);
+        tuesday.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (tuesday.isChecked())
+                    tuesday.setBackground(getResources().getDrawable(R.drawable.round_button));
+                else tuesday.setBackground(getResources().getDrawable(R.drawable.false_round_button));
+            }
+        });
+
+        final ToggleButton wednesday = findViewById(R.id.wedButton);
+        wednesday.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (wednesday.isChecked())
+                    wednesday.setBackground(getResources().getDrawable(R.drawable.round_button));
+                else wednesday.setBackground(getResources().getDrawable(R.drawable.false_round_button));
+            }
+        });
+
+        final ToggleButton thursday = findViewById(R.id.thursButton);
+        thursday.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (thursday.isChecked())
+                    thursday.setBackground(getResources().getDrawable(R.drawable.round_button));
+                else thursday.setBackground(getResources().getDrawable(R.drawable.false_round_button));
+            }
+        });
+
+        final ToggleButton friday = findViewById(R.id.fridayButton);
+        friday.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (friday.isChecked())
+                    friday.setBackground(getResources().getDrawable(R.drawable.round_button));
+                else friday.setBackground(getResources().getDrawable(R.drawable.false_round_button));
+            }
+        });
+
+        final ToggleButton saturday = findViewById(R.id.satButton);
+        saturday.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (saturday.isChecked())
+                    saturday.setBackground(getResources().getDrawable(R.drawable.round_button));
+                else saturday.setBackground(getResources().getDrawable(R.drawable.false_round_button));
+            }
+        });
 
         Button createTask = findViewById(R.id.CreateTaskButton);
         createTask.setOnClickListener(new View.OnClickListener() {
