@@ -6,21 +6,22 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/inviteImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:adjustViewBounds="false"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:srcCompat="@android:drawable/ic_menu_send"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/inviteImage"
+        android:layout_toRightOf="@+id/inviteImage"
         android:text="You've Been Invited To "
         android:textSize="16sp" />
 
@@ -39,11 +40,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView9"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/inviteImage"
+        android:layout_toRightOf="@+id/inviteImage"
         android:background="@color/colorWhiteish"
         android:text="Accept"
-        android:textColor="@android:color/holo_green_light" />
+        android:textColor="@android:color/holo_green_light"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <Button
         android:id="@+id/rejectButton"
@@ -54,6 +56,7 @@
         android:layout_toRightOf="@+id/confirmButton"
         android:background="@color/colorWhiteish"
         android:text="Decline"
-        android:textColor="@android:color/holo_red_dark" />
+        android:textColor="@android:color/holo_red_dark"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </RelativeLayout>

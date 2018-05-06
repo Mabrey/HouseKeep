@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -107,17 +108,48 @@ public class NotificationActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    LinearLayout Notification = findViewById(R.id.NotificationLL);
+                    final LinearLayout Notification = findViewById(R.id.NotificationLL);
                     Notification.removeAllViews();
-                    for(DataSnapshot newSnap: dataSnapshot.getChildren()){
+                    for(final DataSnapshot newSnap: dataSnapshot.getChildren()){
                         InviteMessage invite = new InviteMessage(getApplicationContext(), newSnap.child("Name").getValue().toString(), newSnap.getKey().toString());
                         //View InviteMessage = invite.rootView;
-                        View InviteMessage = LayoutInflater.from(getApplicationContext()).inflate(R.layout.invitation_button, Notification, false);
+                        final View InviteMessage = LayoutInflater.from(getApplicationContext()).inflate(R.layout.invitation_button, Notification, false);
 
-                        TextView groupName = InviteMessage.findViewById(R.id.inviteButtonGroupName);
+                        final TextView groupName = InviteMessage.findViewById(R.id.inviteButtonGroupName);
                         groupName.setText(newSnap.child("Name").getValue().toString());
                         //invites.add(invite);
+                        Button acceptInvite = InviteMessage.findViewById(R.id.confirmButton);
 
+                        acceptInvite.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View v){
+                                //TODO add group to the user's groups and set status to member.
+                                DatabaseReference inviteAcceptRef = database.getReference();
+                                String groupKey = newSnap.getKey().toString();
+                                String groupName = newSnap.child("Name").getValue().toString();
+                                inviteAcceptRef.child("Users").child(username).child("Invites").child(groupKey).setValue(null);
+                                inviteAcceptRef.child("Users").child(username).child("Groups").child(groupKey).setValue(groupName);
+                                inviteAcceptRef.child("Groups").child(groupKey).child("Members").child(username).setValue("Memeber");
+                                Toast.makeText(getApplicationContext() ,"Accept" + groupName, Toast.LENGTH_SHORT).show();
+                                Notification.removeView(InviteMessage);
+                            }
+                        });
+                        Button declineInvite = InviteMessage.findViewById(R.id.rejectButton);
+                        declineInvite.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View v){
+                                //TODO remove invite and remove member from group
+                                String groupKey = newSnap.getKey().toString();
+                                DatabaseReference inviteDeclineRef = database.getReference();
+                                inviteDeclineRef.child("Users/" + username + "/Invite/" + newSnap.getKey().toString()).setValue(null);
+                                inviteDeclineRef.child("Groups/" + groupKey + "/Members/" + username).setValue(null);
+                                Toast.makeText(getApplicationContext(),"Decline " + groupName.getText().toString() , Toast.LENGTH_SHORT).show();
+                                Notification.removeView(InviteMessage);
+
+                            }
+                        });
+                        ImageView icon = InviteMessage.findViewById(R.id.inviteImage);
+                        icon.setImageResource(android.R.drawable.ic_menu_send);
                         Notification.addView(InviteMessage);
                     }
 
