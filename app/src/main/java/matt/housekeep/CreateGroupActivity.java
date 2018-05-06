@@ -93,7 +93,6 @@ public class CreateGroupActivity extends AppCompatActivity {
                     DatabaseReference userRef = database.getReference();
                     userRef.child("Users").child(inviteUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             //check if username exists.
                             if (dataSnapshot.exists()) {
@@ -146,20 +145,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         }
     };
 
-    private void addMembers() {
-        final LinearLayout inviteMembers = findViewById(R.id.inviteLinear);
-
-        ImageButton addMember = findViewById(R.id.addMembers);
-        addMember.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                addMemberCount++;
-                Toast.makeText(CreateGroupActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
-                inviteMembers.addView(createNewEditText(addMemberCount));
-            }
-        });
-    }
-
-    private EditText createNewEditText(int memberCount) {
+    public EditText createNewEditText(int memberCount) {
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final EditText newMem = new EditText(this);
         newMem.setLayoutParams(lparams);
