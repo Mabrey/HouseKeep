@@ -1,12 +1,15 @@
 package matt.housekeep;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -40,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<String> taskNames;
     private ArrayList<String> choreNames;
     private String username;
+    private Menu menu;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -317,8 +321,34 @@ public class HomeActivity extends AppCompatActivity {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(final Menu menu){
+
+        this.menu = menu;
+
         getMenuInflater().inflate(R.menu.action_bar_buttons, menu);
+
+        DatabaseReference notifRef = database.getReference("Users/" + username + "/Invites");
+
+        notifRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MenuItem item = menu.findItem(R.id.action_notification);
+                if(dataSnapshot.exists()){
+
+                    item.setIcon(R.drawable.ic_notification_bell_ring);
+                }
+                else {
+
+                    item.setIcon(R.drawable.ic_notification_bell);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         return true;
     }
 
