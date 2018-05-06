@@ -1,14 +1,17 @@
 package matt.housekeep;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +36,7 @@ public class GroupActivity extends AppCompatActivity {
     private String groupKey;
     private ArrayList<String> taskNames;
     private ArrayList<String> choreNames;
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,5 +259,100 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void confirmLeave(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
+        builder.setCancelable(true);
+        builder.setTitle("Are you sure?");
+        builder.setMessage("Warning: This cannot be undone");
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        database.getReference("Groups/" + groupKey + "/Members/" + username).setValue(null);
+                        database.getReference("Users/" + username + "/Groups/" + groupKey).setValue(null);
+
+                        Intent intent;
+                        Bundle b = new Bundle();
+                        b.putString("GroupName", groupname);
+                        b.putString("UserName", username);
+                        b.putBoolean("inGroup", true);
+
+                        intent = new Intent(GroupActivity.this, HomeActivity.class);
+                        startActivity(intent);
+
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu){
+
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.group_action_bar_buttons, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        Intent intent;
+        Bundle b = new Bundle();
+        b.putString("GroupName", groupname);
+        b.putString("UserName", username);
+        b.putBoolean("inGroup", true);
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.invite_member) {
+            intent = new Intent(GroupActivity.this, InviteMembersActivity.class);
+            intent.putExtras(b);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.leave_group){
+
+            DatabaseReference userRef = database.getReference("Users/" + username + "/Groups");
+            DatabaseReference groupsRef = database.getReference("Groups/" + groupKey);
+
+            groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if(dataSnapshot.child("Owner").getKey() == username){
+                        Toast.makeText(GroupActivity.this, "Must Transfer Ownership", Toast.LENGTH_LONG);
+                    }
+
+                    else {
+
+                        confirmLeave();
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

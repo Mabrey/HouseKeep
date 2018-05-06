@@ -100,6 +100,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="matt.housekeep.SettingsActivity" />
         </activity>
+        <activity
+            android:name=".InviteMembersActivity"
+            android:label="@string/title_activity_invite_members"
+            android:parentActivityName=".GroupActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="matt.housekeep.GroupActivity" />
+        </activity>
     </application>
 
 </manifest>
