@@ -13,12 +13,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -154,20 +158,44 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initTasks(){
 
-        taskNames = new ArrayList<>();
+
+        final LinearLayout taskLL = (LinearLayout)findViewById(R.id.task_layout);
         DatabaseReference myRef = database.getReference("Users/" + username + "/Tasks");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 if(dataSnapshot.exists()){
-                    taskNames.clear();
-                    LinearLayout taskLayout = findViewById(R.id.task_layout);
-                    taskLayout.removeAllViews();
+
+                    taskLL.removeAllViews();
 
                     for(DataSnapshot newSnap: dataSnapshot.getChildren()){
-                        taskNames.add(newSnap.getKey());
+
+                        final View taskButton = LayoutInflater.from(getApplicationContext())
+                                .inflate(R.layout.task_button, taskLL, false);
+
+                        final TextView taskName = taskButton.findViewById(R.id.task_name);
+                        final TextView createdBy = taskButton.findViewById(R.id.created_by_username);
+                        final ImageView profilePic = taskButton.findViewById(R.id.profilePicture);
+                        final TextView creationDate = taskButton.findViewById(R.id.creation_date);
+                        final CheckBox complete = taskButton.findViewById(R.id.checkBox);
+
+                        taskName.setText(newSnap.getKey());
+                        profilePic.setImageResource(R.drawable.ic_profile);
+                        //TODO make these real values
+                        if(newSnap.child("Created By").exists())
+                            createdBy.setText(newSnap.child("Created By").getValue().toString());
+                        if(newSnap.child("Creation Date").exists())
+                            creationDate.setText(newSnap.child("Creation Date").getValue().toString());
+                        Log.d("Task Name", taskName.getText().toString());
+                        // Log.d("Created by", (newSnap.child(taskname).child("Created By").getValue().toString()));
+                        //Log.d("Creation Date", (newSnap.child(taskname).child("Creation Date").getValue().toString()));
+
+                        //setupCheckbox(complete, false);
+
+                        taskLL.addView(taskButton);
+
                     }
-                    makeTaskList();
                 }
             }
 
@@ -181,23 +209,43 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initChores(){
 
-        choreNames = new ArrayList<>();
+
+        final LinearLayout choreLL = (LinearLayout)findViewById(R.id.chore_layout);
         DatabaseReference myRef = database.getReference("Users/" + username + "/Chores");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 if(dataSnapshot.exists()){
-                    choreNames.clear();
-                    LinearLayout choreLayout = findViewById(R.id.chore_layout);
-                    choreLayout.removeAllViews();
+
+                    choreLL.removeAllViews();
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(0,10, 0,10);
+
 
                     for(DataSnapshot newSnap: dataSnapshot.getChildren()){
-                        choreNames.add(newSnap.getKey());
-                    }
-                    for(String name : choreNames)
-                        Log.d("CHORES", name);
 
-                    makeChoreList();
+                        final View choreButton = LayoutInflater.from(getApplicationContext())
+                                .inflate(R.layout.chore_button, choreLL, false);
+
+                        final TextView choreName = choreButton.findViewById(R.id.member_name);
+                        final TextView userResponsible = choreButton.findViewById(R.id.username_textfield);
+                        final ImageView profilePic = choreButton.findViewById(R.id.profilePicture);
+                        final TextView dueDate = choreButton.findViewById(R.id.choreCompleteTime);
+                        final CheckBox complete = choreButton.findViewById(R.id.checkBox);
+
+                        choreName.setText(newSnap.getKey().toString());
+                        profilePic.setImageResource(R.drawable.ic_profile);
+                        //TODO make these real values
+                        userResponsible.setText(username);
+                        if (newSnap.child("Frequency").child("Due Date").exists())
+                            dueDate.setText("Due By: " + newSnap.child("Frequency").child("Due Date").getValue().toString());
+
+                        //setupCheckbox(complete, true);
+                        choreButton.setLayoutParams(params);
+                        choreLL.addView(choreButton);
+
+                    }
                 }
             }
 

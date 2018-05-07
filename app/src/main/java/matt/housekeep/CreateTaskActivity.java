@@ -347,7 +347,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                         }
                         else {
                             String user = prefs.getString(getString(R.string.saved_username_key), "");
-                            DatabaseReference newRef = createTaskDatabase.child("Users").child(user).child(destination).child("Tasks").child(taskName.getText().toString());
+                            DatabaseReference newRef = createTaskDatabase.child("Users").child(user).child("Tasks").child(taskName.getText().toString());
                             createATask(newRef, newTask);
                             //createTaskDatabase.child("Users").child(user).child("Tasks").child(taskName.getText().toString()).child("Description").setValue(description.getText().toString());
                         }
