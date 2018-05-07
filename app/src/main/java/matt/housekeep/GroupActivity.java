@@ -196,6 +196,7 @@ public class GroupActivity extends AppCompatActivity {
                         final ImageView profilePic = choreButton.findViewById(R.id.profilePicture);
                         final TextView dueDate = choreButton.findViewById(R.id.choreCompleteTime);
                         final CheckBox complete = choreButton.findViewById(R.id.checkBox);
+                        final Button clickChore = choreButton.findViewById(R.id.chore_click_button);
 
                         choreName.setText(newSnap.getKey().toString());
                         profilePic.setImageResource(R.drawable.ic_profile);
@@ -215,6 +216,24 @@ public class GroupActivity extends AppCompatActivity {
                             }
                         });
 
+                                clickChore.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        Intent intent;
+                                        Bundle b = new Bundle();
+                                        b.putString("UserName", username);
+                                        b.putString("GroupName", groupname);
+                                        b.putString("GroupKey", groupKey);
+                                        b.putBoolean("inGroup", true);
+                                        b.putString("ChoreName", choreName.getText().toString());
+
+                                        intent = new Intent(GroupActivity.this, ChoreActivity.class);
+                                        intent.putExtras(b);
+                                        startActivity(intent);
+
+                                    }
+                                });
                                 choreButton.setLayoutParams(params);
                                 choreLL.addView(choreButton);
 
@@ -229,38 +248,6 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-    public void makeTaskList(){
-
-        LinearLayout layout = findViewById(R.id.group_task_layout);
-
-        for(int i = 0; i < taskNames.size(); i++){
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            Button btn = new Button(this);
-            btn.setTextSize(18);
-            btn.setId(i);
-            final int id_ = btn.getId();
-            btn.setText(taskNames.get(id_));
-            layout.addView(btn, params);
-
-            btn = (findViewById(id_));
-            btn.setOnClickListener(new View.OnClickListener(){
-                public void onClick(View view) {
-
-                    database.getReference().child("Groups").child(groupKey).child("Tasks").child(taskNames.get(id_)).removeValue();
-                    Toast.makeText(view.getContext(), "Completed " + taskNames.get(id_),
-                            Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(getIntent());
-                    // Log.d("Key", b.getString("GroupKey"));
-                }
-            });
-
-        }
-    }
 
     private void confirmLeave(){
 

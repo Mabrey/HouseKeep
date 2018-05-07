@@ -51,28 +51,34 @@ public class ChoreActivity extends AppCompatActivity {
 
         setTitle(choreName);
 
-        getDescription();
-        initRotation();
         joinRotationButton();
+        getDescription();
+        initMembers();
     }
 
     private void getDescription(){
 
         description = findViewById(R.id.description_textbox);
-        final DatabaseReference choreRef = database.getReference("Groups/" + groupKey + "/Chores");
+        final TextView descriptionLabel = findViewById(R.id.description_label);
+        final DatabaseReference choreRef = database.getReference("Groups/" + groupKey
+                + "/Chores/" + choreName);
         choreRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    String text = dataSnapshot.child("Description").getValue().toString();
-                    if(text.equals("")){
-                        description.setVisibility(View.GONE);
+                    String text;
+                    if(dataSnapshot.child("Description").exists()){
+                        text = dataSnapshot.child("Description").getValue().toString();
+                        if(text.equals("")){
+                            description.setVisibility(View.GONE);
+                            descriptionLabel.setVisibility(View.GONE);
+                        }
+                        else {
+                            description.setVisibility(View.VISIBLE);
+                            descriptionLabel.setVisibility(View.VISIBLE);
+                            description.setText(text);
+                        }
                     }
-                    else {
-                        description.setVisibility(View.VISIBLE);
-                        description.setText(text);
-                    }
-
                 }
             }
 
@@ -92,7 +98,9 @@ public class ChoreActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                database.getReference("Groups/" + groupKey + "/Chores/Rotation/" + username).setValue("true");
+                database.getReference("Groups/" + groupKey + "/Chores/" + choreName
+                        + "/Rotation/" + username).setValue("true");
+                members.add(username);
             }
         });
     }
@@ -112,8 +120,6 @@ public class ChoreActivity extends AppCompatActivity {
                     }
                 }
 
-                getMembers();
-
             }
 
             @Override
@@ -122,6 +128,36 @@ public class ChoreActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initMembers(){
+
+        //members = new ArrayList<>();
+
+        DatabaseReference memberRef = database.getReference("Groups/" + groupKey + "/Chores/"
+                + choreName + "/Rotation");
+
+        memberRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()) {
+                    members = new ArrayList<>();
+
+                    for (DataSnapshot newSnap : dataSnapshot.getChildren()) {
+                        members.add((String) newSnap.getKey());
+                    }
+                    Log.d("finding info", "Finding Member Info");
+
+                    getMembers();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getMembers(){
@@ -139,12 +175,15 @@ public class ChoreActivity extends AppCompatActivity {
 
                     for(int i = 0; i < members.size(); i++){
 
-                        DataSnapshot newSnap = dataSnapshot.child(members.get(i));
+                        Log.d("Chore Username", members.get(i).toString());
+                        DataSnapshot newSnap = dataSnapshot.child(members.get(i).toString());
                         final View memberButton = LayoutInflater.from(getApplicationContext())
                                 .inflate(R.layout.user_profile_button, rotationLL, false);
 
                         final TextView personName = memberButton.findViewById(R.id.member_name);
                         final TextView memberUsername = memberButton.findViewById(R.id.username_textfield);
+
+
 
                         personName.setText(newSnap.child("Name").getValue().toString());
                         memberUsername.setText(members.get(i));
