@@ -8,7 +8,7 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/task_name"
+        android:id="@+id/member_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -20,10 +20,10 @@
     </TextView>
 
     <TextView
-        android:id="@+id/created_by_username"
+        android:id="@+id/username_textfield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/task_name"
+        android:layout_below="@+id/member_name"
         android:layout_toEndOf="@+id/profilePicture"
         android:paddingHorizontal="5dp"
         android:text="thelongestusername"
@@ -35,8 +35,8 @@
         android:id="@+id/choreCompleteTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/task_name"
-        android:layout_toEndOf="@+id/created_by_username"
+        android:layout_below="@+id/member_name"
+        android:layout_toEndOf="@+id/username_textfield"
         android:paddingHorizontal="5dp"
         android:text="5/5"
         android:textSize="16sp">

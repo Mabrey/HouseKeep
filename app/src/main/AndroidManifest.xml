@@ -118,6 +118,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="matt.housekeep.GroupActivity" />
         </activity>
+        <activity
+            android:name=".ChoreActivity"
+            android:label="@string/title_activity_chore"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

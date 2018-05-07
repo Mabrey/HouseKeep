@@ -60,8 +60,8 @@ public class GroupInfoActivity extends AppCompatActivity {
                         DataSnapshot newSnap = dataSnapshot.child(members.get(i));
                         final View memberButton = LayoutInflater.from(getApplicationContext()).inflate(R.layout.user_profile_button, memberLL, false);
 
-                        final TextView personName = memberButton.findViewById(R.id.task_name);
-                        final TextView memberUsername = memberButton.findViewById(R.id.created_by_username);
+                        final TextView personName = memberButton.findViewById(R.id.member_name);
+                        final TextView memberUsername = memberButton.findViewById(R.id.username_textfield);
 
                         personName.setText(newSnap.child("Name").getValue().toString());
                         memberUsername.setText(members.get(i));
@@ -75,8 +75,8 @@ public class GroupInfoActivity extends AppCompatActivity {
                     final View ownerButton = LayoutInflater.from(getApplicationContext()).inflate(R.layout.user_profile_button, memberLL, false);
                     DataSnapshot newSnap = dataSnapshot.child(owner);
 
-                    final TextView personName = ownerButton.findViewById(R.id.task_name);
-                    final TextView ownerUsername = ownerButton.findViewById(R.id.created_by_username);
+                    final TextView personName = ownerButton.findViewById(R.id.member_name);
+                    final TextView ownerUsername = ownerButton.findViewById(R.id.username_textfield);
 
                     personName.setText(newSnap.child("Name").getValue().toString());
                     ownerUsername.setText(owner);

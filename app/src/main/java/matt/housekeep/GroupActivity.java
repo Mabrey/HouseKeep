@@ -165,8 +165,8 @@ public class GroupActivity extends AppCompatActivity {
                         final View choreButton = LayoutInflater.from(getApplicationContext())
                                 .inflate(R.layout.chore_button, choreLL, false);
 
-                        final TextView choreName = choreButton.findViewById(R.id.task_name);
-                        final TextView userResponsible = choreButton.findViewById(R.id.created_by_username);
+                        final TextView choreName = choreButton.findViewById(R.id.member_name);
+                        final TextView userResponsible = choreButton.findViewById(R.id.username_textfield);
                         final ImageView profilePic = choreButton.findViewById(R.id.profilePicture);
                         final TextView dueDate = choreButton.findViewById(R.id.choreCompleteTime);
                         final CheckBox complete = choreButton.findViewById(R.id.checkBox);
