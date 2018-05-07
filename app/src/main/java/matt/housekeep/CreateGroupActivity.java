@@ -101,6 +101,13 @@ public class CreateGroupActivity extends AppCompatActivity {
                                 createGroupDatabase.child("Users").child(invUser).child("Invites").child(groupID).child("Name").setValue(groupName.getText().toString());
                                 createGroupDatabase.child("Users").child(invUser).child("Invites").child(groupID).child("Status").setValue("Pending");
                                 Toast.makeText(getApplicationContext(), "matt.housekeep.Group Created" , Toast.LENGTH_SHORT).show();
+
+                                //initialize statistics for group
+                                createGroupDatabase.child("Groups").child(groupID).child("Statistics").child("Tasks Completed").setValue(0);
+                                createGroupDatabase.child("Groups").child(groupID).child("Statistics").child("Chores Completed").setValue(0);
+
+
+
                             } else { //username doesn't exist
                                 Toast.makeText(getApplicationContext(), "Invalid Username Entered" , Toast.LENGTH_SHORT).show();
                             }

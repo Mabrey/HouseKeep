@@ -35,15 +35,18 @@ public class GroupInfoActivity extends AppCompatActivity {
     private TextView numOfChores;
     private int chores;
     private TextView numOfChoresCompleted;
-    private int choresCompleted;
+    private String choresCompleted;
     private TextView numOfTasks;
     private int tasks;
     private TextView numOfTasksCompleted;
-    private int tasksCompleted;
+    private String tasksCompleted;
     private LinearLayout ownerLL;
     private LinearLayout memberLL;
 
     private void findMemberInfo(){
+
+        ownerLL = (LinearLayout)findViewById(R.id.ownerLLayout);
+        memberLL = (LinearLayout)findViewById(R.id.memberLLayout);
 
         DatabaseReference userRef = database.getReference("Users");
 
@@ -53,6 +56,7 @@ public class GroupInfoActivity extends AppCompatActivity {
 
                 if(dataSnapshot.exists()){
                     Log.d("Member Info", "Snapshot exists");
+                    ownerLL.removeAllViews();
                     memberLL.removeAllViews();
 
                     for(int i = 0; i < members.size(); i++){
@@ -99,8 +103,6 @@ public class GroupInfoActivity extends AppCompatActivity {
 
     private void initMembers(){
 
-        ownerLL = (LinearLayout)findViewById(R.id.ownerLLayout);
-        memberLL = (LinearLayout)findViewById(R.id.memberLLayout);
         numberOfMembers = findViewById(R.id.number_of_members);
         members = new ArrayList<>();
 
@@ -112,6 +114,7 @@ public class GroupInfoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.exists()) {
+
                     for (DataSnapshot newSnap : dataSnapshot.child("Members").getChildren()) {
                         members.add((String) newSnap.getKey());
                     }
@@ -150,9 +153,12 @@ public class GroupInfoActivity extends AppCompatActivity {
 
         numOfChores = findViewById(R.id.number_of_active_chores);
         numOfTasks = findViewById(R.id.number_of_active_tasks);
+        numOfChoresCompleted = findViewById(R.id.number_of_chores_completed);
+        numOfTasksCompleted = findViewById(R.id.num_of_tasks_completed);
 
         DatabaseReference myRef = database.getReference("Groups/" + groupKey + "/Chores");
         DatabaseReference taskRef = database.getReference("Groups/" + groupKey + "/Tasks");
+        DatabaseReference statsRef = database.getReference("Groups/" + groupKey + "/Statistics");
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -183,6 +189,36 @@ public class GroupInfoActivity extends AppCompatActivity {
                         tasks++;
                     }
                     numOfTasks.setText(String.valueOf(tasks));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        statsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    if(dataSnapshot.child("Tasks Completed").exists()){
+                        tasksCompleted = dataSnapshot.child("Tasks Completed").getValue().toString();
+                        numOfTasksCompleted.setText(tasksCompleted);
+                    }
+                    else {
+                        database.getReference("Groups/" + groupKey + "/Statistics/Tasks Completed").setValue("0");
+                        numOfTasksCompleted.setText("0");
+                    }
+
+                    if(dataSnapshot.child("Chores Completed").exists()){
+                        choresCompleted = dataSnapshot.child("Chores Completed").getValue().toString();
+                        numOfChoresCompleted.setText(choresCompleted);
+                    }
+                    else {
+                        database.getReference("Groups/" + groupKey + "/Statistics/Chores Completed").setValue("0");
+                        numOfChoresCompleted.setText("0");
+                    }
                 }
             }
 
