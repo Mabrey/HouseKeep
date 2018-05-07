@@ -225,7 +225,7 @@ public class Chore {
                 calendar3.add(Calendar.MONTH, 1);
                 newDueDate = String.valueOf(calendar3.get(Calendar.MONTH) + 1) + "/" + calendar3.get(Calendar.DAY_OF_MONTH);
                 return newDueDate;
-                
+
         }
         return "Invalid";
     }

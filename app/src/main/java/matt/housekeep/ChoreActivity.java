@@ -32,7 +32,7 @@ public class ChoreActivity extends AppCompatActivity {
     private String groupKey;
     private String choreName;
     private TextView description;
-    private ArrayList<String> members;
+    private ArrayList<String> members = new ArrayList<String>();
 
     //TODO retrieve description from chore in database and display in textview
 
@@ -50,10 +50,10 @@ public class ChoreActivity extends AppCompatActivity {
         choreName = b.getString("ChoreName");
 
         setTitle(choreName);
-
+        initMembers();
         joinRotationButton();
         getDescription();
-        initMembers();
+
     }
 
     private void getDescription(){
@@ -98,11 +98,21 @@ public class ChoreActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                database.getReference("Groups/" + groupKey + "/Chores/" + choreName
-                        + "/Rotation/" + username).setValue("true");
+
+               // database.getReference("Groups/" + groupKey + "/Chores/" + choreName
+                       // + "/Rotation/" + username).setValue("true");
                 members.add(username);
+                updateRotation();
             }
         });
+    }
+
+    private void updateRotation() {
+        for (int i = 0; i < members.size(); i++)
+        {
+            database.getReference("Groups/" + groupKey + "/Chores/" + choreName
+                     + "/Rotation/Next + " + i).setValue(members.get(i));
+        }
     }
 
     private void initRotation(){
@@ -145,7 +155,7 @@ public class ChoreActivity extends AppCompatActivity {
                     members = new ArrayList<>();
 
                     for (DataSnapshot newSnap : dataSnapshot.getChildren()) {
-                        members.add((String) newSnap.getKey());
+                        members.add(newSnap.getValue().toString());
                     }
                     Log.d("finding info", "Finding Member Info");
 
