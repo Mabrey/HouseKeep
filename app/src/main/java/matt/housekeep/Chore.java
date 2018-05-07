@@ -167,4 +167,41 @@ public class Chore {
     public int getMonth(){
         return this.Month;
     }
+
+    public ChoreRotation rotateChore(ChoreRotation oldRotation)
+    {
+        ChoreRotation newChoreRotation = new ChoreRotation();
+        int length = oldRotation.nextOrder.length;
+        newChoreRotation.nextOrderName = new String[length];
+        newChoreRotation.nextOrder = oldRotation.nextOrder;
+        int j = 0;
+        for(int i = 0; i < oldRotation.nextOrder.length; i++)
+        {
+            j++;
+            j %= oldRotation.nextOrder.length;
+
+            newChoreRotation.nextOrderName[i] = oldRotation.nextOrderName[j];
+        }
+        return newChoreRotation;
+    }
+
+
+
+}
+
+class ChoreRotation{
+    String[] nextOrder;
+    String[] nextOrderName;
+
+    ChoreRotation()
+    {
+        this.nextOrder = new String[0];
+        this.nextOrderName = new String[0];
+    }
+
+    ChoreRotation(String[] nextOrder, String[] nextOrderName)
+    {
+        this.nextOrder = nextOrder;
+        this.nextOrderName = nextOrderName;
+    }
 }
