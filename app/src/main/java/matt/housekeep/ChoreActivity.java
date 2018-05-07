@@ -31,7 +31,10 @@ public class ChoreActivity extends AppCompatActivity {
     private String username;
     private String groupKey;
     private String choreName;
+    private TextView description;
     private ArrayList<String> members;
+
+    //TODO retrieve description from chore in database and display in textview
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,37 @@ public class ChoreActivity extends AppCompatActivity {
 
         setTitle(choreName);
 
+        getDescription();
         initRotation();
         joinRotationButton();
+    }
+
+    private void getDescription(){
+
+        description = findViewById(R.id.description_textbox);
+        final DatabaseReference choreRef = database.getReference("Groups/" + groupKey + "/Chores");
+        choreRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String text = dataSnapshot.child("Description").getValue().toString();
+                    if(text.equals("")){
+                        description.setVisibility(View.GONE);
+                    }
+                    else {
+                        description.setVisibility(View.VISIBLE);
+                        description.setText(text);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void joinRotationButton(){
@@ -75,6 +107,7 @@ public class ChoreActivity extends AppCompatActivity {
 
                 if(dataSnapshot.exists()){
                     for(DataSnapshot newSnap : dataSnapshot.getChildren()){
+                        //TODO need to set key to next+X
                         members.add(newSnap.getValue().toString());
                     }
                 }
