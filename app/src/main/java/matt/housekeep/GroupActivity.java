@@ -124,13 +124,21 @@ public class GroupActivity extends AppCompatActivity {
                         //TODO make these real values
                         if(newSnap.child("Created By").exists())
                             createdBy.setText(newSnap.child("Created By").getValue().toString());
-                        //creationDate.setText(newSnap.child("Creation Date").getValue().toString());
+                        if(newSnap.child("Creation Date").exists())
+                            creationDate.setText(newSnap.child("Creation Date").getValue().toString());
                         Log.d("Task Name", taskName.getText().toString());
                        // Log.d("Created by", (newSnap.child(taskname).child("Created By").getValue().toString()));
                         //Log.d("Creation Date", (newSnap.child(taskname).child("Creation Date").getValue().toString()));
 
-                        setupCheckbox(complete, false);
+                        complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if(isChecked){
 
+                                    database.getReference("Groups/" + groupKey + "/Tasks/" + taskName.getText()).setValue(null);
+                                }
+                            }
+                        });
                         taskLL.addView(taskButton);
 
                     }
@@ -178,9 +186,19 @@ public class GroupActivity extends AppCompatActivity {
                         if (newSnap.child("Frequency").child("Due Date").exists())
                             dueDate.setText(newSnap.child("Frequency").child("Due Date").getValue().toString());
 
-                        setupCheckbox(complete, true);
-                        choreButton.setLayoutParams(params);
-                        choreLL.addView(choreButton);
+                                complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if(isChecked){
+
+                                    database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText()).setValue(null);
+
+                                }
+                            }
+                        });
+
+                                choreButton.setLayoutParams(params);
+                                choreLL.addView(choreButton);
 
                     }
                 }
@@ -191,25 +209,6 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void setupCheckbox(final CheckBox complete, final boolean isChore){
-
-        complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked && isChore){
-
-                    //TODO complete chore, update rotation, increment chores completed for user and group
-
-                }
-                else if(isChecked && !isChore){
-
-                    //TODO complete task, increment tasks completed for user and group
-                }
-            }
-        });
-
     }
 
     public void makeTaskList(){
