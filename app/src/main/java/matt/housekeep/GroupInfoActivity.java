@@ -72,8 +72,9 @@ public class GroupInfoActivity extends AppCompatActivity {
                         Log.d("Person Name", newSnap.child("Name").getValue().toString());
                         ImageView icon = memberButton.findViewById(R.id.profilePicture);
                         icon.setImageResource(R.drawable.ic_profile);
-
-                        memberLL.addView(memberButton);
+                        Log.d("Member Count", String.valueOf(members.size()));
+                        if(memberLL.getChildCount() < members.size())
+                            memberLL.addView(memberButton);
                     }
 
                     final View ownerButton = LayoutInflater.from(getApplicationContext()).inflate(R.layout.user_profile_button, memberLL, false);
@@ -104,7 +105,7 @@ public class GroupInfoActivity extends AppCompatActivity {
     private void initMembers(){
 
         numberOfMembers = findViewById(R.id.number_of_members);
-        members = new ArrayList<>();
+        //members = new ArrayList<>();
 
         DatabaseReference memberRef = database.getReference("Groups/" + groupKey);
         DatabaseReference membersREf = database.getReference("Groups/" + groupKey + "/Members");
@@ -114,6 +115,7 @@ public class GroupInfoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.exists()) {
+                    members = new ArrayList<>();
 
                     for (DataSnapshot newSnap : dataSnapshot.child("Members").getChildren()) {
                         members.add((String) newSnap.getKey());
