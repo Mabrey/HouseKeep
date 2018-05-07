@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/profilePicture"
         android:paddingHorizontal="5dp"
-        android:text="Wash the Dishes"
+        android:text="Caleb Moriarty"
         android:textSize="20sp">
 
     </TextView>
@@ -26,37 +26,25 @@
         android:layout_below="@+id/task_name"
         android:layout_toEndOf="@+id/profilePicture"
         android:paddingHorizontal="5dp"
-        android:text="thelongestusername"
+        android:text="cmoriarty21"
         android:textSize="16sp">
 
     </TextView>
-
-    <TextView
-        android:id="@+id/choreCompleteTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/task_name"
-        android:layout_toEndOf="@+id/created_by_username"
-        android:paddingHorizontal="5dp"
-        android:text="5/5"
-        android:textSize="16sp">
-
-    </TextView>
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:padding="5dp" />
 
     <ImageView
         android:id="@+id/profilePicture"
-        android:layout_width="47dp"
-        android:layout_height="49dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         app:srcCompat="@drawable/ic_profile" />
+
+    <Button
+        android:id="@+id/profile_click_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="164dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
