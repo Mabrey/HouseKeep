@@ -5,6 +5,7 @@ import java.util.Date;
 public class Task {
     private String name;
     private String Description;
+    private String Creator;
     private Date CreationDate;
     private Date CompletionDate;
     private boolean CheckedOut;
@@ -70,5 +71,14 @@ public class Task {
     //sets if task is checked out; takes in boolean as input
     public void setCheckedOut(boolean checkedOut) {
         CheckedOut = checkedOut;
+    }
+
+    public void setCreator(String creator)
+    {
+        this.Creator = creator;
+    }
+
+    public String getCreator() {
+        return Creator;
     }
 }
