@@ -101,8 +101,10 @@ public class ChoreActivity extends AppCompatActivity {
 
                // database.getReference("Groups/" + groupKey + "/Chores/" + choreName
                        // + "/Rotation/" + username).setValue("true");
-                members.add(username);
-                updateRotation();
+                if(!members.contains(username)) {
+                    members.add(username);
+                    updateRotation();
+                }
             }
         });
     }

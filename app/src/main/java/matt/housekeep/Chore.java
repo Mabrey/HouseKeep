@@ -1,5 +1,7 @@
 package matt.housekeep;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 
 import java.text.SimpleDateFormat;
@@ -171,7 +173,7 @@ public class Chore {
         return this.Month;
     }
 
-    public ChoreRotation rotateChore(ChoreRotation oldRotation)
+    public static ChoreRotation rotateChore(ChoreRotation oldRotation)
     {
         ChoreRotation newChoreRotation = new ChoreRotation();
         int length = oldRotation.nextOrder.length;
@@ -189,9 +191,9 @@ public class Chore {
         return newChoreRotation;
     }
 
-    public String updateDueDate(DataSnapshot choreSnap, String choreName)
+    public static String updateDueDate(DataSnapshot choreSnap, String choreName)
     {
-        String frequency = choreSnap.child(choreName).child("Frequncy").child("Type").getValue().toString();
+        String frequency = choreSnap.child("Frequency").child("Type").getValue().toString();
         String dueDate;
         String[] dueDateParsed;
         String newDueDate;
@@ -205,20 +207,30 @@ public class Chore {
 
 
             case "Weekly":
-                dueDate = choreSnap.child(choreName).child("Frequncy").child("Due Date").getValue().toString();
+                SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
+                dueDate = choreSnap.child("Frequency").child("Due Date").getValue().toString();
                 dueDateParsed = dueDate.split("/");
                 Calendar calendar2 = Calendar.getInstance();
-                calendar2.set(Calendar.YEAR, Integer.parseInt(dueDateParsed[0]) - 1, Integer.parseInt(dueDateParsed[1]));
-                SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
-                String dayOfWeek = formatter.format(calendar2.DAY_OF_WEEK);
-                int addDays = Integer.parseInt(choreSnap.child(choreName).child("Frequncy").child("Days of Week").child(dayOfWeek).getValue().toString());
+                String dayOfWeek = formatter.format(calendar2.get(Calendar.DAY_OF_WEEK));
+                //calendar2.set(Calendar.YEAR,Calendar.MONTH + 2,Integer.parseInt(dueDateParsed[1]));
+
+
+                int dayOfWeekInt = calendar2.DAY_OF_WEEK;
+                Log.d("Day of week int", String.valueOf(dayOfWeekInt));
+                Log.d("Day of week", String.valueOf(dayOfWeek));
+                calendar2.set(Calendar.YEAR, Integer.parseInt(dueDateParsed[0]) + 1, Integer.parseInt(dueDateParsed[1]));
+                Log.d("Day", dueDateParsed[1] );
+
+                String dayOfWeek2 = formatter.format(calendar2.DAY_OF_WEEK);
+                Log.d("Day of week 2", dayOfWeek2);
+                int addDays = Integer.parseInt(choreSnap.child("Frequency").child("Days of Week").child(dayOfWeek).getValue().toString());
                 calendar2.add(Calendar.DATE, addDays);
                 newDueDate = String.valueOf(calendar2.get(Calendar.MONTH) + 1) + "/" + calendar2.get(Calendar.DAY_OF_MONTH);
                 return newDueDate;
 
 
             case "Monthly":
-                dueDate = choreSnap.child(choreName).child("Frequncy").child("Due Date").getValue().toString();
+                dueDate = choreSnap.child("Frequency").child("Due Date").getValue().toString();
                 dueDateParsed = dueDate.split("/");
                 Calendar calendar3 = Calendar.getInstance();
                 calendar3.set(Calendar.YEAR, Integer.parseInt(dueDateParsed[0]) - 1, Integer.parseInt(dueDateParsed[1]));

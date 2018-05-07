@@ -177,7 +177,7 @@ public class GroupActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Groups/" + groupKey + "/Chores");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.exists()){
 
@@ -186,7 +186,7 @@ public class GroupActivity extends AppCompatActivity {
                     params.setMargins(0,10, 0,10);
 
 
-                    for(DataSnapshot newSnap: dataSnapshot.getChildren()){
+                    for(final DataSnapshot newSnap: dataSnapshot.getChildren()){
 
                         final View choreButton = LayoutInflater.from(getApplicationContext())
                                 .inflate(R.layout.chore_button, choreLL, false);
@@ -201,7 +201,11 @@ public class GroupActivity extends AppCompatActivity {
                         choreName.setText(newSnap.getKey().toString());
                         profilePic.setImageResource(R.drawable.ic_profile);
                         //TODO make these real values
-                        userResponsible.setText("No User In Rotation");
+                        if (newSnap.child("Rotation/Next + 0").exists())
+                            userResponsible.setText(newSnap.child("Rotation/Next + 0").getValue().toString());
+
+                        else userResponsible.setText("No User In Rotation");
+
                         if (newSnap.child("Frequency").child("Due Date").exists())
                             dueDate.setText(newSnap.child("Frequency").child("Due Date").getValue().toString());
 
@@ -209,8 +213,29 @@ public class GroupActivity extends AppCompatActivity {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                 if(isChecked){
+                                    ArrayList<String> nextOrder = new ArrayList<String>();
+                                    ArrayList<String> nextOrderName = new ArrayList<String>();
+                                    for (DataSnapshot rotSnap: newSnap.child("Rotation").getChildren()){
+                                        nextOrder.add(rotSnap.getKey().toString());
+                                        nextOrderName.add(rotSnap.getValue().toString());
+                                    }
+                                    String[] next = new String[nextOrder.size()];
+                                    next = nextOrder.toArray(next);
+
+                                    String[] nextName = new String[nextOrderName.size()];
+                                    nextName = nextOrderName.toArray(nextName);
+
+                                    ChoreRotation choreRotate = new ChoreRotation(next, nextName);
+                                    ChoreRotation newRotate = Chore.rotateChore(choreRotate);
+                                    String newDueDate = Chore.updateDueDate(newSnap, newSnap.getKey().toString());
+
+
                                     //choreLL.removeView(choreButton);
-                                    //database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText()).setValue(null);
+                                    database.getReference("Groups/" + groupKey + "/Chores/" + choreName + "/Frequency/Due Date").setValue(newDueDate);
+                                    for(int i = 0; i < nextName.length ; i++)
+                                    {
+                                        database.getReference("Groups/" + groupKey + "/Chores/" + choreName + "/Rotation/Next + " + i).setValue(nextName[i]);
+                                    }
 
                                 }
                             }
