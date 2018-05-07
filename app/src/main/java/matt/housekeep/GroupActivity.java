@@ -5,18 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -95,16 +96,39 @@ public class GroupActivity extends AppCompatActivity {
 
     private void initTasks(){
 
-        taskNames = new ArrayList<>();
+        final LinearLayout taskLL = (LinearLayout)findViewById(R.id.group_task_layout);
+
         DatabaseReference myRef = database.getReference("Groups/" + groupKey + "/Tasks");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 if(dataSnapshot.exists()){
+
+                    taskLL.removeAllViews();
+
                     for(DataSnapshot newSnap: dataSnapshot.getChildren()){
-                        taskNames.add(newSnap.getKey());
+
+                        final View taskButton = LayoutInflater.from(getApplicationContext())
+                                .inflate(R.layout.task_button, taskLL, false);
+
+                        final TextView taskName = taskButton.findViewById(R.id.task_name);
+                        final TextView createdBy = taskButton.findViewById(R.id.created_by_username);
+                        final ImageView profilePic = taskButton.findViewById(R.id.profilePicture);
+                        final TextView creationDate = taskButton.findViewById(R.id.creation_date);
+                        final CheckBox complete = taskButton.findViewById(R.id.checkBox);
+
+                        taskName.setText(newSnap.getKey().toString());
+                        profilePic.setImageResource(R.drawable.ic_profile);
+                        //TODO make these real values
+                        createdBy.setText("tempUsername");
+                        creationDate.setText("tempDate");
+
+                        setupCheckbox(complete, false);
+
+                        taskLL.addView(taskButton);
+
                     }
-                    makeTaskList();
                 }
             }
 
@@ -113,24 +137,43 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void initChores(){
 
-        choreNames = new ArrayList<>();
+        final LinearLayout choreLL = (LinearLayout)findViewById(R.id.group_chore_layout);
+
         DatabaseReference myRef = database.getReference("Groups/" + groupKey + "/Chores");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot newSnap: dataSnapshot.getChildren()){
-                        choreNames.add(newSnap.getKey());
-                    }
-                    for(String name : choreNames)
-                        Log.d("CHORES", name);
 
-                    makeChoreList();
+                if(dataSnapshot.exists()){
+
+                    choreLL.removeAllViews();
+
+                    for(DataSnapshot newSnap: dataSnapshot.getChildren()){
+
+                        final View choreButton = LayoutInflater.from(getApplicationContext())
+                                .inflate(R.layout.chore_button, choreLL, false);
+
+                        final TextView choreName = choreButton.findViewById(R.id.task_name);
+                        final TextView userResponsible = choreButton.findViewById(R.id.created_by_username);
+                        final ImageView profilePic = choreButton.findViewById(R.id.profilePicture);
+                        final TextView dueDate = choreButton.findViewById(R.id.choreCompleteTime);
+                        final CheckBox complete = choreButton.findViewById(R.id.checkBox);
+
+                        choreName.setText(newSnap.getKey().toString());
+                        profilePic.setImageResource(R.drawable.ic_profile);
+                        //TODO make these real values
+                        userResponsible.setText("tempUsername");
+                        dueDate.setText("tempDate");
+
+                        setupCheckbox(complete, true);
+
+                        choreLL.addView(choreButton);
+
+                    }
                 }
             }
 
@@ -141,39 +184,23 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-    private void makeChoreList(){
+    private void setupCheckbox(final CheckBox complete, final boolean isChore){
 
-        LinearLayout layout = findViewById(R.id.group_chore_layout);
-        //DatabaseReference myRef = database.getReference("Users/" + username + "/Chores");
+        complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked && isChore){
 
+                    //TODO complete chore, update rotation, increment chores completed for user and group
 
-        for(int i = 0; i < choreNames.size(); i++){
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            Button btn = new Button(this);
-            btn.setTextSize(18);
-            btn.setId(i);
-            final int id_ = btn.getId();
-            btn.setText(choreNames.get(id_));
-            layout.addView(btn, params);
-
-            btn = (findViewById(id_));
-            btn.setOnClickListener(new View.OnClickListener(){
-                public void onClick(View view) {
-
-                    database.getReference().child("Groups").child(groupKey).child("Chores").child(choreNames.get(id_)).removeValue();
-                    finish();
-                    startActivity(getIntent());
-                    Toast.makeText(view.getContext(), "Completed " + choreNames.get(id_),
-                            Toast.LENGTH_SHORT).show();
-                    // Log.d("Key", b.getString("GroupKey"));
                 }
-            });
+                else if(isChecked && !isChore){
 
-        }
+                    //TODO complete task, increment tasks completed for user and group
+                }
+            }
+        });
+
     }
 
     public void makeTaskList(){

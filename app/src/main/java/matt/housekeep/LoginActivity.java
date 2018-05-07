@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.member_username);
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.created_by_username);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -205,7 +205,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         else {
             Toast.makeText(getApplicationContext(), "Username/Password Invalid", Toast.LENGTH_SHORT).show();
-            EditText usernameInput = findViewById(R.id.member_username);
+            EditText usernameInput = findViewById(R.id.created_by_username);
             usernameInput.requestFocus();
             EditText passwordInput = findViewById(R.id.password);
             passwordInput.setText("");

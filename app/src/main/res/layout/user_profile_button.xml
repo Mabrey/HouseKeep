@@ -8,7 +8,7 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/personName"
+        android:id="@+id/task_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -20,10 +20,10 @@
     </TextView>
 
     <TextView
-        android:id="@+id/member_username"
+        android:id="@+id/created_by_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/personName"
+        android:layout_below="@+id/task_name"
         android:layout_toEndOf="@+id/profilePicture"
         android:paddingHorizontal="5dp"
         android:text="cmoriarty21"
