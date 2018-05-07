@@ -1,5 +1,8 @@
 package matt.housekeep;
 
+import com.google.firebase.database.DataSnapshot;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -182,9 +185,50 @@ public class Chore {
 
             newChoreRotation.nextOrderName[i] = oldRotation.nextOrderName[j];
         }
+
         return newChoreRotation;
     }
 
+    public String updateDueDate(DataSnapshot choreSnap, String choreName)
+    {
+        String frequency = choreSnap.child(choreName).child("Frequncy").child("Type").getValue().toString();
+        String dueDate;
+        String[] dueDateParsed;
+        String newDueDate;
+
+        switch (frequency){
+            case "Daily":
+                Calendar calendar= Calendar.getInstance();
+                calendar.add(Calendar.DATE, 1);
+                newDueDate = String.valueOf(calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DAY_OF_MONTH);
+                return newDueDate;
+
+
+            case "Weekly":
+                dueDate = choreSnap.child(choreName).child("Frequncy").child("Due Date").getValue().toString();
+                dueDateParsed = dueDate.split("/");
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.set(Calendar.YEAR, Integer.parseInt(dueDateParsed[0]) - 1, Integer.parseInt(dueDateParsed[1]));
+                SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
+                String dayOfWeek = formatter.format(calendar2.DAY_OF_WEEK);
+                int addDays = Integer.parseInt(choreSnap.child(choreName).child("Frequncy").child("Days of Week").child(dayOfWeek).getValue().toString());
+                calendar2.add(Calendar.DATE, addDays);
+                newDueDate = String.valueOf(calendar2.get(Calendar.MONTH) + 1) + "/" + calendar2.get(Calendar.DAY_OF_MONTH);
+                return newDueDate;
+
+
+            case "Monthly":
+                dueDate = choreSnap.child(choreName).child("Frequncy").child("Due Date").getValue().toString();
+                dueDateParsed = dueDate.split("/");
+                Calendar calendar3 = Calendar.getInstance();
+                calendar3.set(Calendar.YEAR, Integer.parseInt(dueDateParsed[0]) - 1, Integer.parseInt(dueDateParsed[1]));
+                calendar3.add(Calendar.MONTH, 1);
+                newDueDate = String.valueOf(calendar3.get(Calendar.MONTH) + 1) + "/" + calendar3.get(Calendar.DAY_OF_MONTH);
+                return newDueDate;
+                
+        }
+        return "Invalid";
+    }
 
 
 }
