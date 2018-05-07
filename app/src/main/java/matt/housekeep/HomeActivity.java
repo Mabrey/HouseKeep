@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -192,7 +193,35 @@ public class HomeActivity extends AppCompatActivity {
                         //Log.d("Creation Date", (newSnap.child(taskname).child("Creation Date").getValue().toString()));
 
                         //setupCheckbox(complete, false);
+                        complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if(isChecked){
+                                    taskLL.removeView(taskButton);
+                                    database.getReference("Users/" + username + "/Tasks/" + taskName.getText()).setValue(null);
 
+                                    final DatabaseReference StatRef = database.getReference("Users/" + username + "/Statistics/Tasks Completed");
+                                    StatRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            int tasksCompleted = 0;
+                                            if(dataSnapshot.exists()){
+                                                tasksCompleted = Integer.parseInt(dataSnapshot.getValue().toString());
+
+                                            }
+                                            tasksCompleted++;
+                                            StatRef.setValue(tasksCompleted);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        });
                         taskLL.addView(taskButton);
 
                     }

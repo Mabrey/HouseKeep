@@ -102,7 +102,7 @@ public class GroupActivity extends AppCompatActivity {
         final DatabaseReference myRef = database.getReference("Groups/" + groupKey + "/Tasks");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.exists()){
 
@@ -136,6 +136,24 @@ public class GroupActivity extends AppCompatActivity {
                                 if(isChecked){
                                     taskLL.removeView(taskButton);
                                     database.getReference("Groups/" + groupKey + "/Tasks/" + taskName.getText()).setValue(null);
+                                    final DatabaseReference StatRef = database.getReference("Groups/" + groupKey + "/Statistics/Tasks Completed");
+                                    StatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            int tasksCompleted = 0;
+                                            if(dataSnapshot.exists()){
+                                                tasksCompleted = Integer.parseInt(dataSnapshot.getValue().toString());
+                                            }
+                                            tasksCompleted++;
+                                            StatRef.setValue(tasksCompleted);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
                                 }
                             }
                         });
