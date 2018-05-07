@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -210,19 +211,48 @@ public class Chore {
                 SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
                 dueDate = choreSnap.child("Frequency").child("Due Date").getValue().toString();
                 dueDateParsed = dueDate.split("/");
+
                 Calendar calendar2 = Calendar.getInstance();
-                String dayOfWeek = formatter.format(calendar2.get(Calendar.DAY_OF_WEEK));
-                //calendar2.set(Calendar.YEAR,Calendar.MONTH + 2,Integer.parseInt(dueDateParsed[1]));
+                String dayOfWeek;
+                int day = calendar2.get(Calendar.DAY_OF_WEEK);
+                switch (day) {
+                    case Calendar.SUNDAY:
+                        // Current day is Sunday
+                        dayOfWeek = "Sunday";
+                        break;
+
+                    case Calendar.MONDAY:
+                        // Current day is Monday
+                        dayOfWeek = "Monday";
+                        break;
+
+                    case Calendar.TUESDAY:
+                        // etc.
+                        dayOfWeek = "Tuesday";
+                        break;
+
+                    case Calendar.WEDNESDAY:
+                        dayOfWeek = "Wednesday";
+                        break;
+
+                    case Calendar.THURSDAY:
+                        dayOfWeek = "Thursday";
+                        break;
+
+                    case Calendar.FRIDAY:
+                        dayOfWeek = "Friday";
+                        break;
+
+                    case Calendar.SATURDAY:
+                        dayOfWeek = "Saturday";
+                        break;
+
+                    default: dayOfWeek = "Sunday";
+
+                }
+                Log.d("Day of week", String.valueOf(day));
 
 
-                int dayOfWeekInt = calendar2.DAY_OF_WEEK;
-                Log.d("Day of week int", String.valueOf(dayOfWeekInt));
-                Log.d("Day of week", String.valueOf(dayOfWeek));
-                calendar2.set(Calendar.YEAR, Integer.parseInt(dueDateParsed[0]) + 1, Integer.parseInt(dueDateParsed[1]));
-                Log.d("Day", dueDateParsed[1] );
-
-                String dayOfWeek2 = formatter.format(calendar2.DAY_OF_WEEK);
-                Log.d("Day of week 2", dayOfWeek2);
                 int addDays = Integer.parseInt(choreSnap.child("Frequency").child("Days of Week").child(dayOfWeek).getValue().toString());
                 calendar2.add(Calendar.DATE, addDays);
                 newDueDate = String.valueOf(calendar2.get(Calendar.MONTH) + 1) + "/" + calendar2.get(Calendar.DAY_OF_MONTH);

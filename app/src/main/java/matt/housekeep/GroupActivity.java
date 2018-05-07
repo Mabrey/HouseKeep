@@ -231,10 +231,10 @@ public class GroupActivity extends AppCompatActivity {
 
 
                                     //choreLL.removeView(choreButton);
-                                    database.getReference("Groups/" + groupKey + "/Chores/" + choreName + "/Frequency/Due Date").setValue(newDueDate);
+                                    database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText().toString() + "/Frequency/Due Date").setValue(newDueDate);
                                     for(int i = 0; i < nextName.length ; i++)
                                     {
-                                        database.getReference("Groups/" + groupKey + "/Chores/" + choreName + "/Rotation/Next + " + i).setValue(nextName[i]);
+                                        database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText().toString() + "/Rotation/Next + " + i).setValue(nextName[i]);
                                     }
 
                                 }
