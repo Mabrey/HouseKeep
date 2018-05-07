@@ -92,11 +92,11 @@ public class InviteMembersActivity extends AppCompatActivity {
                             //check if username exists.
                             if (dataSnapshot.exists()) {
                                 String invUser = inviteUser.getText().toString();
-                                Log.d("Invite User: ", invUser);
+                                Log.d("Invite matt.housekeep.User: ", invUser);
                                 database.getReference().child("Groups").child(groupKey).child("Members").child(inviteUser.getText().toString()).setValue("Pending");
                                 database.getReference().child("Users").child(invUser).child("Invites").child(groupKey).child("Name").setValue(groupname);
                                 database.getReference().child("Users").child(invUser).child("Invites").child(groupKey).child("Status").setValue("Pending");
-                                Toast.makeText(getApplicationContext(), "User(s) Invited" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "matt.housekeep.User(s) Invited" , Toast.LENGTH_SHORT).show();
                             } else { //username doesn't exist
                                 Toast.makeText(getApplicationContext(), "Invalid Username Entered" , Toast.LENGTH_SHORT).show();
                             }

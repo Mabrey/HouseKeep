@@ -1,3 +1,5 @@
+package matt.housekeep;
+
 import java.util.Date;
 
 public class Task {

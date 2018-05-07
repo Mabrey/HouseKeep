@@ -1,7 +1,9 @@
+package matt.housekeep;
+
 import java.util.List;
 
 /*
-TO-DO:  may need to add methods for removing a single group/chore/task/ToDoList
+TO-DO:  may need to add methods for removing a single group/chore/task/matt.housekeep.ToDoList
         to the current list
  */
 public class User {
@@ -32,7 +34,7 @@ public class User {
         this.UsersTDL = UsersTDL;
     }
 
-    //sets name of User; takes string as input
+    //sets name of matt.housekeep.User; takes string as input
     public void setName(String name) {
         this.name = name;
     }
@@ -56,47 +58,47 @@ public class User {
         return completedChores;
     }
 
-    //sets user's groups; takes List<Group> as input
+    //sets user's groups; takes List<matt.housekeep.Group> as input
     public void setUsersGroups(List<Group> usersGroups) {
         UsersGroups = usersGroups;
     }
 
-    //adds group to user's list of groups; takes Group as input
+    //adds group to user's list of groups; takes matt.housekeep.Group as input
     public void addGroup(Group group){
         UsersGroups.add(group);
     }
 
-    //removes specific group from user's list of groups; takes Group as input
+    //removes specific group from user's list of groups; takes matt.housekeep.Group as input
     public void removeUsersGroup(Group group){
         UsersGroups.remove(group);
     }
 
-    //returns user's groups as List<Group>
+    //returns user's groups as List<matt.housekeep.Group>
     public List<Group> getUsersGroups() {
         return UsersGroups;
     }
 
-    //sets user's chores; takes List<Chore> as input
+    //sets user's chores; takes List<matt.housekeep.Chore> as input
     public void setUsersChores(List<Chore> usersChores) {
         UsersChores = usersChores;
     }
 
-    //adds a single chore to the user's current list of chores; takes Chore as input
+    //adds a single chore to the user's current list of chores; takes matt.housekeep.Chore as input
     public void addUsersChore(Chore chore){
         UsersChores.add(chore);
     }
 
-    //removes specific chore from user's list of chores; takes Chore as input
+    //removes specific chore from user's list of chores; takes matt.housekeep.Chore as input
     public void removeUsersChore(Chore chore){
         UsersChores.remove(chore);
     }
 
-    //returns user's chores as List<Chore>
+    //returns user's chores as List<matt.housekeep.Chore>
     public List<Chore> getUsersChores() {
         return UsersChores;
     }
 
-    //sets user's tasks; takes List<Task> as input
+    //sets user's tasks; takes List<matt.housekeep.Task> as input
     public void setUsersTasks(List<Task> usersTasks) {
         UsersTasks = usersTasks;
     }
@@ -106,17 +108,17 @@ public class User {
         UsersTasks.add(task);
     }
 
-    //removes specific task from user's list of tasks; takes Task as input
+    //removes specific task from user's list of tasks; takes matt.housekeep.Task as input
     public void removeUsersTask(Task task){
         UsersTasks.remove(task);
     }
 
-    //returns user's tasks as List<Task>
+    //returns user's tasks as List<matt.housekeep.Task>
     public List<Task> getUsersTasks() {
         return UsersTasks;
     }
 
-    //sets user's to-do list; takes Lists<ToDoList> as input
+    //sets user's to-do list; takes Lists<matt.housekeep.ToDoList> as input
     public void setUsersTDL(List<ToDoList> usersTDL) {
         UsersTDL = usersTDL;
     }
@@ -130,7 +132,7 @@ public class User {
         UsersTDL.remove(tdl);
     }
 
-    //returns user's to-do list as List<ToDoList>
+    //returns user's to-do list as List<matt.housekeep.ToDoList>
     public List<ToDoList> getUsersTDL() {
         return UsersTDL;
     }

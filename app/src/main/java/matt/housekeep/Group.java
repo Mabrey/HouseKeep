@@ -1,3 +1,5 @@
+package matt.housekeep;
+
 import java.util.List;
 
 public class Group {
@@ -21,7 +23,7 @@ public class Group {
         this.groupMembers = groupMembers;
     }
 
-    //Name of Group
+    //Name of matt.housekeep.Group
     public void setNameOfGroup(String nameOfGroup) {
         this.nameOfGroup = nameOfGroup;
     }
@@ -29,7 +31,7 @@ public class Group {
         return nameOfGroup;
     }
 
-    //Owner of Group
+    //Owner of matt.housekeep.Group
     public void setOwnerOfGroup(User ownerOfGroup) {
         this.ownerOfGroup = ownerOfGroup;
     }

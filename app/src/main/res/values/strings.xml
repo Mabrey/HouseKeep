@@ -47,7 +47,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_create_task">Create Task</string>
 
-    <!-- Strings related to Create Task -->
+    <!-- Strings related to Create matt.housekeep.Task -->
     <string name="choose_type">Type:</string>
     <string name="choose_frequency">Frequency:</string>
     <string name="frequency_tooltip">Choose N/A for Frequency if you wish to create a task, otherwise a chore rotation is created in the given interval.</string>

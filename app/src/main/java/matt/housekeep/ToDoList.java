@@ -1,3 +1,5 @@
+package matt.housekeep;
+
 import java.util.List;
 
 public class ToDoList {
@@ -10,7 +12,7 @@ public class ToDoList {
         ListOfTasks = null;
     }
 
-    //overloaded constructor; takes in String and List<Task> as inputs
+    //overloaded constructor; takes in String and List<matt.housekeep.Task> as inputs
     //sets taks name and list
     public ToDoList(String name, List<Task> ListOfTasks){
         this.name = name;
@@ -27,12 +29,12 @@ public class ToDoList {
         return name;
     }
 
-    //sets list of tasks; takes in List<Task> as input
+    //sets list of tasks; takes in List<matt.housekeep.Task> as input
     public void setListOfTasks(List<Task> listOfTasks) {
         ListOfTasks = listOfTasks;
     }
 
-    //returns list of current tasks as List<Task>
+    //returns list of current tasks as List<matt.housekeep.Task>
     public List<Task> getListOfTasks() {
         return ListOfTasks;
     }

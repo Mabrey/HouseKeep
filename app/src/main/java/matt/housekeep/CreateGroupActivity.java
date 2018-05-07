@@ -97,11 +97,11 @@ public class CreateGroupActivity extends AppCompatActivity {
                             //check if username exists.
                             if (dataSnapshot.exists()) {
                                 String invUser = inviteUser.getText().toString();
-                                Log.d("Invite User: ", invUser);
+                                Log.d("Invite matt.housekeep.User: ", invUser);
                                 createGroupDatabase.child("Groups").child(groupID).child("Members").child(inviteUser.getText().toString()).setValue("Pending");
                                 createGroupDatabase.child("Users").child(invUser).child("Invites").child(groupID).child("Name").setValue(groupName.getText().toString());
                                 createGroupDatabase.child("Users").child(invUser).child("Invites").child(groupID).child("Status").setValue("Pending");
-                                Toast.makeText(getApplicationContext(), "Group Created" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "matt.housekeep.Group Created" , Toast.LENGTH_SHORT).show();
                             } else { //username doesn't exist
                                 Toast.makeText(getApplicationContext(), "Invalid Username Entered" , Toast.LENGTH_SHORT).show();
                             }

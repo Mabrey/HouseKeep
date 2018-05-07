@@ -22,6 +22,10 @@ import android.widget.ToggleButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
+import java.util.Calendar;
+import java.util.List;
+
 public class CreateTaskActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
@@ -216,10 +220,39 @@ public class CreateTaskActivity extends AppCompatActivity {
                 EditText taskName = findViewById(R.id.createTaskName);
                 Spinner typeSpin = findViewById(R.id.typeSpinner);
                 Spinner freqSpin = findViewById(R.id.frequencySpinner);
+                Spinner daySpin = findViewById(R.id.dayOfMonthSpinner);
                 EditText description = findViewById(R.id.createTaskDescription);
+                Chore newChore;
+
+
+
+                if (freqSpin.getSelectedItem().toString().equals("Weekly")) {
+                    boolean[] dayOfWeekRot = getWeeklyButtonStates();
+                    newChore = new Chore(taskName.getText().toString(), "Weekly", dayOfWeekRot,description.getText().toString());
+                }
+
+                else if (freqSpin.getSelectedItem().toString().equals("Monthly")) {
+                    int day = Integer.parseInt(daySpin.getSelectedItem().toString());
+                    newChore = new Chore(taskName.getText().toString(), "Monthly", day, description.getText().toString());
+                    if(newChore.CurrentMonth(day)) //check if day is after current day on current month. If not, it will set it to next month
+                    {
+                        String date = String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + String.valueOf(day);
+                        newChore.setMonth(Calendar.getInstance().get(Calendar.MONTH) + 1);
+                        newChore.setDate(date);
+                    }
+                    else{
+                        String date = String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 2) + "/" + String.valueOf(day);
+                        newChore.setMonth(Calendar.getInstance().get(Calendar.MONTH) + 2);
+                        newChore.setDate(date);
+                    }
+
+                }
+
+                else newChore = new Chore(taskName.getText().toString(), "Daily", description.getText().toString()); //daily
+
 
                 boolean inGroup = b.getBoolean("inGroup");
-                Log.d("In Group:", Boolean.toString(inGroup));
+
                 String destination;
                 if (inGroup)
                     destination = b.getString("GroupKey");
@@ -234,13 +267,17 @@ public class CreateTaskActivity extends AppCompatActivity {
                     case "Chore":
 
                         if (inGroup) {
-                            createTaskDatabase.child("Groups").child(destination).child("Chores").child(taskName.getText().toString()).child("Frequency").setValue(freqSpin.getSelectedItem().toString());
-                            createTaskDatabase.child("Groups").child(destination).child("Chores").child(taskName.getText().toString()).child("Description").setValue(description.getText().toString());
+                            DatabaseReference newRef = createTaskDatabase.child("Groups").child(destination).child("Chores").child(taskName.getText().toString());
+                            createChore(newRef, newChore);
+                            //createTaskDatabase.child("Groups").child(destination).child("Chores").child(taskName.getText().toString()).child("Frequency").child("Type").setValue(freqSpin.getSelectedItem().toString());
+                            //createTaskDatabase.child("Groups").child(destination).child("Chores").child(taskName.getText().toString()).child("Description").setValue(description.getText().toString());
                         }
                         else {
                             String user = prefs.getString(getString(R.string.saved_username_key), "");
-                            createTaskDatabase.child("Users").child(user).child("Chores").child(taskName.getText().toString()).child("Frequency").setValue(freqSpin.getSelectedItem().toString());
-                            createTaskDatabase.child("Users").child(user).child("Chores").child(taskName.getText().toString()).child("Description").setValue(description.getText().toString());
+                            DatabaseReference newRef = createTaskDatabase.child("Users").child(user).child("Chores").child(taskName.getText().toString());
+                            createChore(newRef, newChore);
+                           // createTaskDatabase.child("Users").child(user).child("Chores").child(taskName.getText().toString()).child("Frequency").setValue(freqSpin.getSelectedItem().toString());
+                           // createTaskDatabase.child("Users").child(user).child("Chores").child(taskName.getText().toString()).child("Description").setValue(description.getText().toString());
                         }
                         break;
 
@@ -263,6 +300,37 @@ public class CreateTaskActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void createChore(DatabaseReference newRef, Chore newChore) {
+        newRef.child("Frequency").child("Type").setValue(newChore.getFrequency());
+        newRef.child("Description").setValue(newChore.getDescription());
+
+
+        switch(newChore.getFrequency()){
+            case "Daily":
+                break;
+
+            case "Weekly":
+                boolean[] days = newChore.getDaysOfWeek();
+                newRef.child("Frequency").child("Days of Week").child("Sunday").setValue(days[0]);
+                newRef.child("Frequency").child("Days of Week").child("Monday").setValue(days[1]);
+                newRef.child("Frequency").child("Days of Week").child("Tuesday").setValue(days[2]);
+                newRef.child("Frequency").child("Days of Week").child("Wednesday").setValue(days[3]);
+                newRef.child("Frequency").child("Days of Week").child("Thursday").setValue(days[4]);
+                newRef.child("Frequency").child("Days of Week").child("Friday").setValue(days[5]);
+                newRef.child("Frequency").child("Days of Week").child("Saturday").setValue(days[6]);
+                break;
+
+            case "Monthly":
+                newRef.child("Frequency").child("Rotation Day").setValue(newChore.getRotationMonthDay());
+                newRef.child("Frequency").child("Rotation Day For Month").setValue(newChore.getRotationCurrentMonth());
+                newRef.child("Frequency").child("Rotation Month").setValue(newChore.getMonth());
+                newRef.child("Frequency").child("Due Date").setValue(newChore.getDate());
+
+
+                break;
+        }
     }
 
     private void checkifWeeklyFrequency() {
@@ -319,4 +387,22 @@ public class CreateTaskActivity extends AppCompatActivity {
         });
     }
 
+    public boolean[] getWeeklyButtonStates() {
+        boolean[] States = new boolean[7];
+        ToggleButton sunday = findViewById(R.id.sunButton);
+        ToggleButton monday = findViewById(R.id.monButton);
+        ToggleButton tuesday = findViewById(R.id.tuesButton);
+        ToggleButton wednesday = findViewById(R.id.wedButton);
+        ToggleButton thursday = findViewById(R.id.thursButton);
+        ToggleButton friday = findViewById(R.id.fridayButton);
+        ToggleButton satday = findViewById(R.id.satButton);
+        States[0] = sunday.isChecked();
+        States[1] = monday.isChecked();
+        States[2] = tuesday.isChecked();
+        States[3] = wednesday.isChecked();
+        States[4] = thursday.isChecked();
+        States[5] = friday.isChecked();
+        States[6] = satday.isChecked();
+        return States;
+    }
 }
