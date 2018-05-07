@@ -134,7 +134,7 @@ public class GroupActivity extends AppCompatActivity {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                 if(isChecked){
-
+                                    taskLL.removeView(taskButton);
                                     database.getReference("Groups/" + groupKey + "/Tasks/" + taskName.getText()).setValue(null);
                                 }
                             }
@@ -190,8 +190,8 @@ public class GroupActivity extends AppCompatActivity {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                 if(isChecked){
-
-                                    database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText()).setValue(null);
+                                    //choreLL.removeView(choreButton);
+                                    //database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText()).setValue(null);
 
                                 }
                             }
