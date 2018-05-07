@@ -1,5 +1,6 @@
 package matt.housekeep;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Chore {
     private int FreqDays;
     private int FreqWeeks;
     private List<User> Rotation;
-    private boolean[] DaysOfWeekRotation;
+    private ArrayList<DaysForRotation> DaysOfWeekRotation;
     private User ResponsibleForChore;
 
     //default constructor; initializes all class variables to null values
@@ -40,7 +41,7 @@ public class Chore {
         this.description = description;
     }
 
-    public Chore(String name, String weekly, boolean[] daysOfWeekRotation, String description)
+    public Chore(String name, String weekly, ArrayList<DaysForRotation> daysOfWeekRotation, String description)
     {
         this.name = name;
         this.FrequencyType = weekly;
@@ -140,7 +141,7 @@ public class Chore {
         ResponsibleForChore = responsibleForChore;
     }
 
-    public boolean[] getDaysOfWeek() {
+    public ArrayList<DaysForRotation> getDaysOfWeek() {
         return DaysOfWeekRotation;
     }
 

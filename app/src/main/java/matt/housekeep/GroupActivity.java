@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -98,7 +99,7 @@ public class GroupActivity extends AppCompatActivity {
 
         final LinearLayout taskLL = (LinearLayout)findViewById(R.id.group_task_layout);
 
-        DatabaseReference myRef = database.getReference("Groups/" + groupKey + "/Tasks");
+        final DatabaseReference myRef = database.getReference("Groups/" + groupKey + "/Tasks");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -118,11 +119,15 @@ public class GroupActivity extends AppCompatActivity {
                         final TextView creationDate = taskButton.findViewById(R.id.creation_date);
                         final CheckBox complete = taskButton.findViewById(R.id.checkBox);
 
-                        taskName.setText(newSnap.getKey().toString());
+                        taskName.setText(newSnap.getKey());
                         profilePic.setImageResource(R.drawable.ic_profile);
                         //TODO make these real values
-                        createdBy.setText("tempUsername");
-                        creationDate.setText("tempDate");
+                        if(newSnap.child("Created By").exists())
+                            createdBy.setText(newSnap.child("Created By").getValue().toString());
+                        //creationDate.setText(newSnap.child("Creation Date").getValue().toString());
+                        Log.d("Task Name", taskName.getText().toString());
+                       // Log.d("Created by", (newSnap.child(taskname).child("Created By").getValue().toString()));
+                        //Log.d("Creation Date", (newSnap.child(taskname).child("Creation Date").getValue().toString()));
 
                         setupCheckbox(complete, false);
 
@@ -151,6 +156,9 @@ public class GroupActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
 
                     choreLL.removeAllViews();
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(0,10, 0,10);
+
 
                     for(DataSnapshot newSnap: dataSnapshot.getChildren()){
 
@@ -166,11 +174,12 @@ public class GroupActivity extends AppCompatActivity {
                         choreName.setText(newSnap.getKey().toString());
                         profilePic.setImageResource(R.drawable.ic_profile);
                         //TODO make these real values
-                        userResponsible.setText("tempUsername");
-                        dueDate.setText("tempDate");
+                        userResponsible.setText("No User In Rotation");
+                        if (newSnap.child("Frequency").child("Due Date").exists())
+                            dueDate.setText(newSnap.child("Frequency").child("Due Date").getValue().toString());
 
                         setupCheckbox(complete, true);
-
+                        choreButton.setLayoutParams(params);
                         choreLL.addView(choreButton);
 
                     }

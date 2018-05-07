@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.firebase.database.DatabaseReference;
@@ -24,9 +25,16 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class CreateTaskActivity extends AppCompatActivity {
 
@@ -39,6 +47,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     private Spinner frequencySpinner;
     private Spinner daysSpinner;
     private String groupname;
+    String[] DaysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -230,9 +239,48 @@ public class CreateTaskActivity extends AppCompatActivity {
                 if(typeSpin.getSelectedItem().toString().equals("Chore")) {
 
                     if (freqSpin.getSelectedItem().toString().equals("Weekly")) {
-                        boolean[] dayOfWeekRot = getWeeklyButtonStates();
-                        newChore = new Chore(taskName.getText().toString(), "Weekly", dayOfWeekRot, description.getText().toString());
-                    } else if (freqSpin.getSelectedItem().toString().equals("Monthly")) {
+                        ArrayList<DaysForRotation> dayOfWeekRot = getWeeklyButtonStates();
+
+                        if (dayOfWeekRot.size() == 0) {
+                            Toast.makeText(getApplicationContext(), "Select A Day", Toast.LENGTH_SHORT);
+                            return;
+                        }
+                        else {
+
+                            newChore = new Chore(taskName.getText().toString(), "Weekly", dayOfWeekRot, description.getText().toString());
+                            //need to find the due date based on current day to rotation
+
+                            int dateDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+                            int diff = 0;
+
+                            for(int i = 0; i < dayOfWeekRot.size(); i++ )
+                            {
+                                if(Arrays.asList(DaysOfWeek).indexOf(dayOfWeekRot.get(i).Day) < dateDayOfWeek)
+                                    continue;
+
+                                if(Arrays.asList(DaysOfWeek).indexOf(dayOfWeekRot.get(i).Day) == dateDayOfWeek)
+                                {
+                                    if(dayOfWeekRot.size() > i + 1) {
+                                        diff = Arrays.asList(DaysOfWeek).indexOf(dayOfWeekRot.get(i + 1).Day) - dateDayOfWeek;
+                                        break;
+                                    }
+                                }
+
+                                if(Arrays.asList(DaysOfWeek).indexOf(dayOfWeekRot.get(i).Day) > dateDayOfWeek)
+                                {
+                                    diff = Arrays.asList(DaysOfWeek).indexOf(dayOfWeekRot.get(i).Day) - dateDayOfWeek;
+                                    break;
+                                }
+                            }
+
+                            Calendar calendar = new GregorianCalendar();
+                            calendar.add(Calendar.DAY_OF_MONTH, diff);
+                            String date = String.valueOf(calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DAY_OF_MONTH);
+                            newChore.setDate(date);
+                        }
+
+                    }
+                    else if (freqSpin.getSelectedItem().toString().equals("Monthly")) {
                         int day = Integer.parseInt(daySpin.getSelectedItem().toString());
                         newChore = new Chore(taskName.getText().toString(), "Monthly", day, description.getText().toString());
                         if (newChore.CurrentMonth(day)) //check if day is after current day on current month. If not, it will set it to next month
@@ -246,8 +294,13 @@ public class CreateTaskActivity extends AppCompatActivity {
                             newChore.setDate(date);
                         }
 
-                    } else
+                    } else {
                         newChore = new Chore(taskName.getText().toString(), "Daily", description.getText().toString()); //daily
+                        Calendar calendar = new GregorianCalendar();
+                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+                        String date = String.valueOf(calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DAY_OF_MONTH);
+                        newChore.setDate(date);
+                    }
                 }
                 else if(typeSpin.getSelectedItem().toString().equals("Task"))
                 {
@@ -326,17 +379,17 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         switch(newChore.getFrequency()){
             case "Daily":
+                newRef.child("Frequency").child("Due Date").setValue(newChore.getDate());
                 break;
 
             case "Weekly":
-                boolean[] days = newChore.getDaysOfWeek();
-                newRef.child("Frequency").child("Days of Week").child("Sunday").setValue(days[0]);
-                newRef.child("Frequency").child("Days of Week").child("Monday").setValue(days[1]);
-                newRef.child("Frequency").child("Days of Week").child("Tuesday").setValue(days[2]);
-                newRef.child("Frequency").child("Days of Week").child("Wednesday").setValue(days[3]);
-                newRef.child("Frequency").child("Days of Week").child("Thursday").setValue(days[4]);
-                newRef.child("Frequency").child("Days of Week").child("Friday").setValue(days[5]);
-                newRef.child("Frequency").child("Days of Week").child("Saturday").setValue(days[6]);
+                ArrayList<DaysForRotation> dayOfWeekRot = newChore.getDaysOfWeek();
+                for(int i = 0; i < dayOfWeekRot.size(); i++)
+                {
+                    newRef.child("Frequency").child("Days of Week").child(dayOfWeekRot.get(i).Day).setValue(dayOfWeekRot.get(i).daysUntilNextDue);
+                }
+                newRef.child("Frequency").child("Due Date").setValue(newChore.getDate());
+
                 break;
 
             case "Monthly":
@@ -344,8 +397,6 @@ public class CreateTaskActivity extends AppCompatActivity {
                 newRef.child("Frequency").child("Rotation Day For Month").setValue(newChore.getRotationCurrentMonth());
                 newRef.child("Frequency").child("Rotation Month").setValue(newChore.getMonth());
                 newRef.child("Frequency").child("Due Date").setValue(newChore.getDate());
-
-
                 break;
         }
     }
@@ -404,7 +455,8 @@ public class CreateTaskActivity extends AppCompatActivity {
         });
     }
 
-    public boolean[] getWeeklyButtonStates() {
+    public ArrayList<DaysForRotation> getWeeklyButtonStates() {
+        ArrayList<DaysForRotation> RotationSchedule = new ArrayList<DaysForRotation>();
         boolean[] States = new boolean[7];
         ToggleButton sunday = findViewById(R.id.sunButton);
         ToggleButton monday = findViewById(R.id.monButton);
@@ -413,13 +465,54 @@ public class CreateTaskActivity extends AppCompatActivity {
         ToggleButton thursday = findViewById(R.id.thursButton);
         ToggleButton friday = findViewById(R.id.fridayButton);
         ToggleButton satday = findViewById(R.id.satButton);
-        States[0] = sunday.isChecked();
-        States[1] = monday.isChecked();
-        States[2] = tuesday.isChecked();
-        States[3] = wednesday.isChecked();
-        States[4] = thursday.isChecked();
-        States[5] = friday.isChecked();
-        States[6] = satday.isChecked();
-        return States;
+        ToggleButton[] weekButtons = {sunday, monday, tuesday, wednesday, thursday, friday, satday};
+
+
+        int j = 0;
+        for(int i = 0; i < 7; i++)
+        {
+
+            if(weekButtons[i].isChecked())
+            {
+                DaysForRotation newDay = new DaysForRotation();
+                newDay.Day = DaysOfWeek[i];
+                if (j != 0)
+                {
+                    int previousDay = Arrays.asList(DaysOfWeek).indexOf(RotationSchedule.get(j - 1).Day);
+                    int diff = i - previousDay;
+                    RotationSchedule.get(j - 1).daysUntilNextDue = diff;
+                }
+                RotationSchedule.add(newDay);
+                j++;
+            }
+        }
+
+        if(RotationSchedule.size() == 1){
+            DaysForRotation tempDay;
+            tempDay = RotationSchedule.get(0);
+            tempDay.daysUntilNextDue = 7;
+            RotationSchedule.set(0, tempDay);
+        }
+        else if (RotationSchedule.size() == 0)
+            return RotationSchedule;
+        else {
+            int length = RotationSchedule.size() - 1;
+            DaysForRotation tempDay = RotationSchedule.get(length);
+            int firstDay = Arrays.asList(DaysOfWeek).indexOf(RotationSchedule.get(0).Day);
+            int lastDay = Arrays.asList(DaysOfWeek).indexOf(RotationSchedule.get(length).Day);
+            tempDay.daysUntilNextDue = 7 - (lastDay - firstDay);
+            Log.d("Last Day", String.valueOf(lastDay));
+            Log.d("first Day", String.valueOf(firstDay));
+            Log.d("Length Day", String.valueOf(length));
+            RotationSchedule.set(length, tempDay);
+        }
+
+        return RotationSchedule;
     }
+}
+
+class DaysForRotation
+{
+    String Day;
+    int daysUntilNextDue;
 }
