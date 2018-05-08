@@ -29,7 +29,7 @@ public class GroupInfoActivity extends AppCompatActivity {
     private String username;
     private String groupname;
     private String groupKey;
-    private ArrayList<String> members;
+    private ArrayList<String> members = new ArrayList<String>();
     private String owner;
     private TextView numberOfMembers;
     private TextView numOfChores;

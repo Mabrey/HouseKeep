@@ -33,7 +33,7 @@ public class InviteMessage extends RelativeLayout{
             @Override
             public void onClick(View v){
                 //TODO add group to the user's groups and set status to member.
-                Toast.makeText(getContext(),"Accept", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(),"Accept", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -41,7 +41,7 @@ public class InviteMessage extends RelativeLayout{
             @Override
             public void onClick(View v){
                 //TODO remove invite and remove member from group
-                Toast.makeText(getContext(),"Decline", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getContext(),"Decline", Toast.LENGTH_SHORT).show();
             }
         });
     }

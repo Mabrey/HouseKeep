@@ -318,8 +318,8 @@ public class HomeActivity extends AppCompatActivity {
                     intent.putExtras(b);
                     startActivity(intent);
 
-                    Toast.makeText(view.getContext(), "Button clicked index: " +
-                            (id_-500), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(view.getContext(), "Button clicked index: " +
+                     //       (id_-500), Toast.LENGTH_SHORT).show();
                     Log.d("Key", b.getString("GroupKey"));
                 }
             });
@@ -444,7 +444,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_notification) {
-            Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
+           // Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             intent = new Intent(HomeActivity.this, NotificationActivity.class);
             intent.putExtras(b);
             startActivity(intent);

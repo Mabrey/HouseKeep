@@ -130,7 +130,7 @@ public class NotificationActivity extends AppCompatActivity {
                                 inviteAcceptRef.child("Users").child(username).child("Invites").child(groupKey).setValue(null);
                                 inviteAcceptRef.child("Users").child(username).child("Groups").child(groupKey).setValue(groupName);
                                 inviteAcceptRef.child("Groups").child(groupKey).child("Members").child(username).setValue("Memeber");
-                                Toast.makeText(getApplicationContext() ,"Accept" + groupName, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext() ,"Accepted" + groupName, Toast.LENGTH_SHORT).show();
                                 Notification.removeView(InviteMessage);
                             }
                         });
@@ -143,7 +143,7 @@ public class NotificationActivity extends AppCompatActivity {
                                 DatabaseReference inviteDeclineRef = database.getReference();
                                 inviteDeclineRef.child("Users/" + username + "/Invite/" + newSnap.getKey().toString()).setValue(null);
                                 inviteDeclineRef.child("Groups/" + groupKey + "/Members/" + username).setValue(null);
-                                Toast.makeText(getApplicationContext(),"Decline " + groupName.getText().toString() , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"Declined " + groupName.getText().toString() , Toast.LENGTH_SHORT).show();
                                 Notification.removeView(InviteMessage);
 
                             }

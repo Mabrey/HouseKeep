@@ -250,7 +250,7 @@ public class Chore {
                     default: dayOfWeek = "Sunday";
 
                 }
-                Log.d("Day of week", String.valueOf(day));
+                Log.d("Day of week", dayOfWeek);
 
 
                 int addDays = Integer.parseInt(choreSnap.child("Frequency").child("Days of Week").child(dayOfWeek).getValue().toString());
