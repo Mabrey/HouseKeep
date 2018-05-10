@@ -203,7 +203,8 @@ public class Chore {
             case "Daily":
                 Calendar calendar= Calendar.getInstance();
                 calendar.add(Calendar.DATE, 1);
-                newDueDate = String.valueOf(calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DAY_OF_MONTH);
+                newDueDate = String.valueOf(calendar.get(calendar.MONTH) + 1) + "/" + calendar.get(calendar.DAY_OF_MONTH);
+                Log.d("Date", newDueDate );
                 return newDueDate;
 
 
@@ -213,8 +214,12 @@ public class Chore {
                 dueDateParsed = dueDate.split("/");
 
                 Calendar calendar2 = Calendar.getInstance();
+                Calendar calendar4 = Calendar.getInstance();
+                calendar2.set(calendar2.get(Calendar.YEAR), Integer.parseInt(dueDateParsed[0]) - 1 , Integer.parseInt(dueDateParsed[1]));
+
+
                 String dayOfWeek;
-                int day = calendar2.get(Calendar.DAY_OF_WEEK);
+                int day = calendar2.get(calendar2.DAY_OF_WEEK);
                 switch (day) {
                     case Calendar.SUNDAY:
                         // Current day is Sunday
@@ -251,11 +256,15 @@ public class Chore {
 
                 }
                 Log.d("Day of week", dayOfWeek);
+                Log.d("Day due", dueDate);
+                Log.d("Month", String.valueOf(calendar2.get(calendar2.MONTH)) );
+                Log.d("Date", String.valueOf(calendar2.get(calendar2.DATE)) );
+                Log.d("Year", String.valueOf(calendar2.get(calendar2.YEAR)) );
 
 
                 int addDays = Integer.parseInt(choreSnap.child("Frequency").child("Days of Week").child(dayOfWeek).getValue().toString());
-                calendar2.add(Calendar.DATE, addDays);
-                newDueDate = String.valueOf(calendar2.get(Calendar.MONTH) + 1) + "/" + calendar2.get(Calendar.DAY_OF_MONTH);
+                calendar2.add(calendar2.DATE, addDays);
+                newDueDate = String.valueOf(calendar2.get(calendar2.MONTH) + 1) + "/" + calendar2.get(calendar2.DAY_OF_MONTH);
                 return newDueDate;
 
 
