@@ -66,7 +66,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="131" />
+                                                <entry key="scalingPercent" value="94" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -79,8 +79,10 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="3c91e6" />
-                                      <entry key="foregroundImage" value="C:\Users\matth\AndroidStudioProjects\HouseKeep\icons\logo.png" />
-                                      <entry key="outputName" value="ic_housekeep" />
+                                      <entry key="backgroundLayerName" value="ic_housekeep_background" />
+                                      <entry key="foregroundImage" value="C:\Users\matth\AndroidStudioProjects\HouseKeep\icons\logo2.PNG" />
+                                      <entry key="foregroundLayerName" value="ic_housekeep_foreground2" />
+                                      <entry key="outputName" value="ic_housekeep2" />
                                     </map>
                                   </option>
                                 </PersistentState>

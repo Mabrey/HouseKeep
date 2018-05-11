@@ -10,9 +10,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_housekeep"
+        android:icon="@mipmap/ic_housekeep2"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_housekeep_round"
+        android:roundIcon="@mipmap/ic_housekeep2_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
