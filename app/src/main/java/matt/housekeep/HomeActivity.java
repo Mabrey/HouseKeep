@@ -197,11 +197,33 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                 if(isChecked){
-                                    taskLL.removeView(taskButton);
-                                    database.getReference("Users/" + username + "/Tasks/" + taskName.getText()).setValue(null);
+
+                                    Thread thread = new Thread(){
+                                        @Override
+                                        public void run(){
+
+                                            try{
+                                                Thread.sleep(1000);
+                                            }catch(InterruptedException e)
+                                            {
+
+                                            }
+
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    taskLL.removeView(taskButton);
+                                                    database.getReference("Users/" + username + "/Tasks/" + taskName.getText()).setValue(null);
+                                                }
+                                            });
+                                        }
+                                    };
+
+                                    thread.start();
+
 
                                     final DatabaseReference StatRef = database.getReference("Users/" + username + "/Statistics/Tasks Completed");
-                                    StatRef.addValueEventListener(new ValueEventListener() {
+                                    StatRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -236,6 +258,8 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    String newDueDate;
+    String oldDueDate;
     private void initChores(){
 
 
@@ -252,7 +276,7 @@ public class HomeActivity extends AppCompatActivity {
                     params.setMargins(0,10, 0,10);
 
 
-                    for(DataSnapshot newSnap: dataSnapshot.getChildren()){
+                    for(final DataSnapshot newSnap: dataSnapshot.getChildren()){
 
                         final View choreButton = LayoutInflater.from(getApplicationContext())
                                 .inflate(R.layout.chore_button, choreLL, false);
@@ -273,6 +297,75 @@ public class HomeActivity extends AppCompatActivity {
                         //setupCheckbox(complete, true);
                         choreButton.setLayoutParams(params);
                         choreLL.addView(choreButton);
+
+
+                        complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if(isChecked){
+
+                                    Thread thread = new Thread(){
+                                        @Override
+                                        public void run(){
+
+                                            try{
+                                                Thread.sleep(1000);
+                                            }catch(InterruptedException e)
+                                            {
+
+                                            }
+
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    complete.setChecked(false);
+                                                    oldDueDate = newSnap.child("Frequency").child("Due Date").getValue().toString();
+                                                    newDueDate = Chore.updateDueDate(newSnap, newSnap.getKey().toString());
+                                                    if(!oldDueDate.equals(newDueDate)) {
+                                                        database.getReference("Users/" + username + "/Chores/" + choreName.getText().toString() + "/Frequency/Due Date").setValue(newDueDate);
+
+                                                    }
+
+                                                    final DatabaseReference StatRef = database.getReference("Users/" + username + "/Statistics/Chores Completed");
+                                                    StatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                            int choresCompleted = 0;
+                                                            if(dataSnapshot.exists()){
+                                                                choresCompleted = Integer.parseInt(dataSnapshot.getValue().toString());
+
+                                                            }
+                                                            if(!oldDueDate.equals(newDueDate)) {
+                                                                Log.d("Old due", oldDueDate);
+                                                                Log.d("New due", newDueDate);
+
+                                                                choresCompleted++;
+                                                                StatRef.setValue(choresCompleted);
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+
+                                                }
+                                            });
+                                        }
+                                    };
+
+                                    thread.start();
+
+
+
+
+                                }
+
+                            }
+                        });
+
 
                     }
                 }
@@ -349,19 +442,41 @@ public class HomeActivity extends AppCompatActivity {
 
             btn = (findViewById(id_));
             btn.setOnClickListener(new View.OnClickListener(){
-                public void onClick(View view) {
+                public void onClick(final View view) {
 
-                    database.getReference().child("Users").child(username).child("Chores").child(choreNames.get(id_)).removeValue();
-                    layout.removeView((View) findViewById(id_));
+                    Thread thread = new Thread(){
+                        @Override
+                        public void run(){
 
-                    Toast.makeText(view.getContext(), "Completed " + choreNames.get(id_),
-                            Toast.LENGTH_SHORT).show();
+                            try{
+                                Thread.sleep(500);
+                            }catch(InterruptedException e)
+                            {
+
+                            }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    database.getReference().child("Users").child(username).child("Chores").child(choreNames.get(id_)).removeValue();
+                                    layout.removeView((View) findViewById(id_));
+
+                                    Toast.makeText(view.getContext(), "Completed " + choreNames.get(id_),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    };
+
+                    thread.start();
                    // Log.d("Key", b.getString("GroupKey"));
                 }
             });
 
         }
     }
+
+
 
     public void makeTaskList(){
 
@@ -382,12 +497,35 @@ public class HomeActivity extends AppCompatActivity {
 
             btn = (findViewById(id_));
             btn.setOnClickListener(new View.OnClickListener(){
-                public void onClick(View view) {
+                public void onClick(final View view) {
 
-                    database.getReference().child("Users").child(username).child("Tasks").child(taskNames.get(id_)).removeValue();
-                    layout.removeView((View) findViewById(id_));
-                    Toast.makeText(view.getContext(), "Completed " + taskNames.get(id_),
-                            Toast.LENGTH_SHORT).show();
+
+                    Thread thread = new Thread(){
+                        @Override
+                        public void run(){
+
+                            try{
+                                Thread.sleep(500);
+                            }catch(InterruptedException e)
+                            {
+
+                            }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    database.getReference().child("Users").child(username).child("Tasks").child(taskNames.get(id_)).removeValue();
+                                    layout.removeView((View) findViewById(id_));
+                                    Toast.makeText(view.getContext(), "Completed " + taskNames.get(id_),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    };
+
+                    thread.start();
+
+
 
                 }
             });

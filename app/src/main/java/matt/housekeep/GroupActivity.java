@@ -134,25 +134,49 @@ public class GroupActivity extends AppCompatActivity {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                 if(isChecked){
-                                    taskLL.removeView(taskButton);
-                                    database.getReference("Groups/" + groupKey + "/Tasks/" + taskName.getText()).setValue(null);
-                                    final DatabaseReference StatRef = database.getReference("Groups/" + groupKey + "/Statistics/Tasks Completed");
-                                    StatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                    Thread thread = new Thread(){
                                         @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            int tasksCompleted = 0;
-                                            if(dataSnapshot.exists()){
-                                                tasksCompleted = Integer.parseInt(dataSnapshot.getValue().toString());
+                                        public void run(){
+
+                                            try{
+                                                Thread.sleep(1000);
+                                            }catch(InterruptedException e)
+                                            {
+
                                             }
-                                            tasksCompleted++;
-                                            StatRef.setValue(tasksCompleted);
-                                        }
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    taskLL.removeView(taskButton);
+                                                    database.getReference("Groups/" + groupKey + "/Tasks/" + taskName.getText()).setValue(null);
 
+                                                    final DatabaseReference StatRef = database.getReference("Groups/" + groupKey + "/Statistics/Tasks Completed");
+                                                    StatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            int tasksCompleted = 0;
+                                                            if(dataSnapshot.exists()){
+                                                                tasksCompleted = Integer.parseInt(dataSnapshot.getValue().toString());
+                                                            }
+                                                            tasksCompleted++;
+                                                            StatRef.setValue(tasksCompleted);
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+                                                }
+                                            });
                                         }
-                                    });
+                                    };
+
+                                    thread.start();
+
+
 
                                 }
                             }
@@ -212,32 +236,85 @@ public class GroupActivity extends AppCompatActivity {
                                 complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                if(isChecked){
-                                    ArrayList<String> nextOrder = new ArrayList<String>();
-                                    ArrayList<String> nextOrderName = new ArrayList<String>();
-                                    for (DataSnapshot rotSnap: newSnap.child("Rotation").getChildren()){
-                                        nextOrder.add(rotSnap.getKey().toString());
-                                        nextOrderName.add(rotSnap.getValue().toString());
-                                    }
-                                    String[] next = new String[nextOrder.size()];
-                                    next = nextOrder.toArray(next);
 
-                                    String[] nextName = new String[nextOrderName.size()];
-                                    nextName = nextOrderName.toArray(nextName);
+                                if(isChecked && username.equals(userResponsible.getText().toString())){
 
-                                    ChoreRotation choreRotate = new ChoreRotation(next, nextName);
-                                    ChoreRotation newRotate = Chore.rotateChore(choreRotate);
-                                    String newDueDate = Chore.updateDueDate(newSnap, newSnap.getKey().toString());
+                                    Thread thread = new Thread(){
+                                        @Override
+                                        public void run(){
+
+                                            try{
+                                                Thread.sleep(1000);
+                                            }catch(InterruptedException e)
+                                            {
+
+                                            }
+
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    complete.setChecked(false);
+                                                    ArrayList<String> nextOrder = new ArrayList<String>();
+                                                    ArrayList<String> nextOrderName = new ArrayList<String>();
+                                                    for (DataSnapshot rotSnap: newSnap.child("Rotation").getChildren()){
+                                                        nextOrder.add(rotSnap.getKey().toString());
+                                                        nextOrderName.add(rotSnap.getValue().toString());
+                                                    }
+                                                    String[] next = new String[nextOrder.size()];
+                                                    next = nextOrder.toArray(next);
+
+                                                    String[] nextName = new String[nextOrderName.size()];
+                                                    nextName = nextOrderName.toArray(nextName);
+
+                                                    ChoreRotation choreRotate = new ChoreRotation(next, nextName);
+                                                    ChoreRotation newRotate = Chore.rotateChore(choreRotate);
+                                                    String newDueDate = Chore.updateDueDate(newSnap, newSnap.getKey().toString());
 
 
-                                    //choreLL.removeView(choreButton);
-                                    database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText().toString() + "/Frequency/Due Date").setValue(newDueDate);
-                                    for(int i = 0; i < nextName.length ; i++)
-                                    {
-                                        database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText().toString() + "/Rotation/Next + " + i).setValue(nextName[i]);
-                                    }
+                                                    //choreLL.removeView(choreButton);
+                                                    database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText().toString() + "/Frequency/Due Date").setValue(newDueDate);
+                                                    for(int i = 0; i < nextName.length ; i++)
+                                                    {
+                                                        database.getReference("Groups/" + groupKey + "/Chores/" + choreName.getText().toString() + "/Rotation/Next + " + i).setValue(newRotate.nextOrderName[i]);
+                                                    }
+
+                                                    final DatabaseReference StatRef = database.getReference("Groups/" + groupKey + "/Statistics/Chores Completed");
+                                                    StatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                            int choresCompleted = 0;
+                                                            if(dataSnapshot.exists()){
+                                                                choresCompleted = Integer.parseInt(dataSnapshot.getValue().toString());
+
+                                                            }
+                                                            choresCompleted++;
+                                                            StatRef.setValue(choresCompleted);
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    };
+
+                                    thread.start();
+
+
+
+
+
+
+
+
+
 
                                 }
+                                else complete.setChecked(false);
                             }
                         });
 
